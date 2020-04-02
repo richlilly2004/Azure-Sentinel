@@ -1,0 +1,396 @@
+{
+    "version": "Notebook/1.0",
+    "items": [
+      {
+        "type": 9,
+        "content": {
+          "version": "KqlParameterItem/1.0",
+          "parameters": [
+            {
+              "id": "fd258da3-1556-41fc-b428-17122a3c8662",
+              "version": "KqlParameterItem/1.0",
+              "name": "TimeRange",
+              "type": 4,
+              "isRequired": true,
+              "value": {
+                "durationMs": 7776000000
+              },
+              "typeSettings": {
+                "selectableValues": [
+                  {
+                    "durationMs": 300000
+                  },
+                  {
+                    "durationMs": 900000
+                  },
+                  {
+                    "durationMs": 1800000
+                  },
+                  {
+                    "durationMs": 3600000
+                  },
+                  {
+                    "durationMs": 14400000
+                  },
+                  {
+                    "durationMs": 43200000
+                  },
+                  {
+                    "durationMs": 86400000
+                  },
+                  {
+                    "durationMs": 172800000
+                  },
+                  {
+                    "durationMs": 259200000
+                  },
+                  {
+                    "durationMs": 604800000
+                  },
+                  {
+                    "durationMs": 1209600000
+                  },
+                  {
+                    "durationMs": 2419200000
+                  },
+                  {
+                    "durationMs": 2592000000
+                  },
+                  {
+                    "durationMs": 5184000000
+                  },
+                  {
+                    "durationMs": 7776000000
+                  }
+                ],
+                "allowCustom": true
+              },
+              "resourceType": "microsoft.insights/components"
+            }
+          ],
+          "style": "pills",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "parameters - 1"
+      },
+      {
+        "type": 1,
+        "content": {
+          "json": "## Overview "
+        },
+        "name": "text - 2"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| summarize count() by Operation, bin(TimeGenerated, 1d)",
+          "size": 0,
+          "title": "Activities, by time",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "areachart"
+        },
+        "customWidth": "70",
+        "name": "query - 0"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| summarize count() by Operation",
+          "size": 0,
+          "title": "User type activities",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "piechart"
+        },
+        "customWidth": "30",
+        "name": "query - 3"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| summarize count() by UserId\r\n| sort by count_ desc",
+          "size": 0,
+          "title": "Operations, by User",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "customWidth": "25",
+        "name": "query - 16"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where ChannelType != \"\"\r\n| summarize count() by ChannelType",
+          "size": 1,
+          "title": "Channel Types Created",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "piechart"
+        },
+        "customWidth": "25",
+        "name": "query - 17"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Operation == \"TeamCreated\"\r\n| project TimeGenerated, TeamName, UserId\r\n| sort by TimeGenerated desc ",
+          "size": 1,
+          "title": "Teams Created",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "customWidth": "25",
+        "name": "query - 17 - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Operation == \"TeamDeleted\"\r\n| project TimeGenerated, TeamName, UserId\r\n| sort by TimeGenerated desc ",
+          "size": 1,
+          "title": "Teams Deleted",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "customWidth": "25",
+        "name": "query - 17 - Copy - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where Operation contains \"Added\" or Operation contains \"Removed\" or Operation contains \"Deleted\" or Operation contains \"Created\"\r\n| summarize count() by Operation",
+          "size": 0,
+          "title": "Admin Activities",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "piechart"
+        },
+        "customWidth": "30",
+        "name": "query - 17"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where Operation contains \"Added\" or Operation contains \"Removed\" or Operation contains \"Deleted\" or Operation contains \"Created\"\r\n| project TimeGenerated, Operation, TeamName, ChannelName, UserId\r\n| sort by TimeGenerated desc",
+          "size": 0,
+          "title": "Admin Activities",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "customWidth": "70",
+        "name": "query - 16"
+      },
+      {
+        "type": 1,
+        "content": {
+          "json": "---\r\n## External Users"
+        },
+        "name": "text - 5"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberAdded\"\r\n| where Members !contains \"netrixllc.com\" and Members !contains \"tetravx.com\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
+          "size": 4,
+          "title": "External Users Added to Team",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 20"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberRemoved\"\r\n| where Members !contains \"netrixllc.com\" and Members !contains \"tetravx.com\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
+          "size": 4,
+          "title": "External Users Removed from Team",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 20 - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where UserId !contains \"netrixllc.com\" and  UserId !contains \"tetravx.com\" and  UserId !contains \"interactcrm.com\" and  UserId !contains \"nplus2.com\"\r\n| project TimeGenerated, Operation, UserId, ObjectId\r\n| sort by TimeGenerated desc",
+          "size": 0,
+          "title": "External User Activity",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 20 - Copy - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "TeamsData\r\n| where Workload == \"MicrosoftTeams\"\r\n| where UserId !contains \"netrixllc.com\" and  UserId !contains \"tetravx.com\" and  UserId !contains \"interactcrm.com\" and  UserId !contains \"nplus2.com\"\r\n| summarize count() by Operation, bin(TimeGenerated, 1d)",
+          "size": 0,
+          "title": "External Activity, by Day",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "timechart"
+        },
+        "name": "query - 8"
+      },
+      {
+        "type": 1,
+        "content": {
+          "json": "---\r\n## Suspicious Activity"
+        },
+        "name": "text - 5 - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "// If you want to look at user added further than 7 days ago adjust this value \r\nlet time_ago = 7d; \r\n// If you want to change the timeframe of how quickly accounts need to be added and removed change this value \r\nlet time_delta = 1h; \r\nTeamsData  \r\n| where TimeGenerated > ago(time_ago) \r\n| where Operation =~ \"MemberAdded\" \r\n| extend UPN = tostring(parse_json(Members)[0].UPN) \r\n| project TimeAdded=TimeGenerated, Operation, UPN, UserWhoAdded = UserId, TeamName, TeamGuid\r\n| join ( \r\nTeamsData  \r\n| where TimeGenerated > ago(time_ago) \r\n| where Operation =~ \"MemberRemoved\" \r\n| extend UPN = tostring(parse_json(Members)[0].UPN) \r\n| project TimeDeleted=TimeGenerated, Operation, UPN, UserWhoDeleted = UserId, TeamName, TeamGuid) on UPN, TeamGuid \r\n| where TimeDeleted < (TimeAdded + time_delta) \r\n| project TimeAdded, TimeDeleted, UPN, UserWhoAdded, UserWhoDeleted, TeamName, TeamGuid \r\n// Uncomment the following line to map query entities is you plan to use this as a detection query \r\n| extend timestamp = TimeAdded, AccountCustomEntity = UPN \r\n",
+          "size": 4,
+          "title": "External users added then removed",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 16 - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "// If you have more than 14 days worth of Teams data change this value \r\nlet data_date = 14d; \r\n// If you want to look at users further back than the last day change this value \r\nlet lookback_data = 1d; \r\nlet known_orgs = ( \r\nTeamsData  \r\n| where TimeGenerated > ago(data_date) \r\n| where Operation =~ \"MemberAdded\" or Operation =~ \"TeamsSessionStarted\" \r\n// Extract the correct UPN and parse our external organization domain \r\n| extend UPN = iif(Operation == \"MemberAdded\", tostring(parse_json(Members)[0].UPN), UserId) \r\n| extend Organization = tostring(split(split(UPN, \"_\")[1], \"#\")[0]) \r\n| where isnotempty(Organization) \r\n| summarize by Organization); \r\nTeamsData  \r\n| where TimeGenerated > ago(lookback_data) \r\n| where Operation =~ \"MemberAdded\" \r\n| extend UPN = tostring(parse_json(Members)[0].UPN) \r\n| extend Organization = tostring(split(split(UPN, \"_\")[1], \"#\")[0]) \r\n| where isnotempty(Organization) \r\n| where Organization !in (known_orgs) \r\n// Uncomment the following line to map query entities is you plan to use this as a detection query \r\n| extend timestamp = TimeGenerated, AccountCustomEntity = UPN \r\n",
+          "size": 4,
+          "title": "External users from anomalous organizations",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 16"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": " // Adjust this value to change how many Teams should be deleted before including\r\n let max_delete = 3;\r\n // Adjust this value to change the timewindow the query runs over\r\n let time_window = 1d;\r\n let deleting_users = (\r\n TeamsData \r\n | where TimeGenerated > ago(time_window)\r\n | where Operation =~ \"TeamDeleted\"\r\n | summarize count() by UserId\r\n | where count_ > max_delete\r\n | project UserId);\r\n TeamsData\r\n | where TimeGenerated > ago(time_window)\r\n | where Operation =~ \"TeamDeleted\"\r\n | where UserId in (deleting_users)\r\n | project-away Members\r\n // Uncomment the following line to map query entities is you plan to use this as a detection query\r\n| extend timestamp = TimeGenerated, AccountCustomEntity = UserId",
+          "size": 4,
+          "title": "Multiple Teams deleted by a single user",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 16 - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "let timeFrame = 1d;\r\nlet logonDiff = 10m;\r\nSigninLogs \r\n  | where TimeGenerated >= ago(timeFrame) \r\n  | where ResultType == \"0\" \r\n  | where AppDisplayName startswith \"Microsoft Teams\"\r\n  | project SuccessLogonTime = TimeGenerated, UserPrincipalName, SuccessIPAddress = IPAddress, AppDisplayName, SuccessIPBlock = strcat(split(IPAddress, \".\")[0], \".\", split(IPAddress, \".\")[1])\r\n  | join kind= inner (\r\n      SigninLogs \r\n      | where TimeGenerated >= ago(timeFrame) \r\n      | where ResultType !in (\"0\", \"50140\") \r\n      | where ResultDescription !~ \"Other\"  \r\n      | where AppDisplayName startswith \"Microsoft Teams\"\r\n      | project FailedLogonTime = TimeGenerated, UserPrincipalName, FailedIPAddress = IPAddress, AppDisplayName, ResultType, ResultDescription\r\n  ) on UserPrincipalName, AppDisplayName \r\n  | where SuccessLogonTime < FailedLogonTime and FailedLogonTime - SuccessLogonTime <= logonDiff and FailedIPAddress !startswith SuccessIPBlock\r\n  | summarize FailedLogonTime = max(FailedLogonTime), SuccessLogonTime = max(SuccessLogonTime) by UserPrincipalName, SuccessIPAddress, AppDisplayName, FailedIPAddress, ResultType, ResultDescription \r\n  | extend timestamp = SuccessLogonTime, AccountCustomEntity = UserPrincipalName, IPCustomEntity = SuccessIPAddress",
+          "size": 4,
+          "title": "Successful logon from IP and failure from a different IP (Teams Signins)",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 16 - Copy - Copy"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "// Adjust this value to change how many teams a user is made owner of before detecting \r\nlet max_owner_count = 3; \r\n// Change this value to adjust how larger timeframe the query is run over. \r\nlet time_window = 1d; \r\nlet high_owner_count = (TeamsData \r\n| where TimeGenerated > ago(time_window) \r\n| where Operation =~ \"MemberRoleChanged\" \r\n| extend Member = tostring(parse_json(Members)[0].UPN)  \r\n| extend NewRole = toint(parse_json(Members)[0].Role)  \r\n| where NewRole == 2 \r\n| summarize dcount(TeamName) by Member \r\n| where dcount_TeamName > max_owner_count \r\n| project Member); \r\nTeamsData \r\n| where TimeGenerated > ago(time_window) \r\n| where Operation =~ \"MemberRoleChanged\" \r\n| extend Member = tostring(parse_json(Members)[0].UPN)  \r\n| extend NewRole = toint(parse_json(Members)[0].Role)  \r\n| where NewRole == 2 \r\n| where Member in (high_owner_count)  \r\n// Uncomment the following line to map query entities is you plan to use this as a detection query \r\n| extend timestamp = TimeGenerated, AccountCustomEntity = Member ",
+          "size": 4,
+          "title": "User made Owner of multiple Teams",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "visualization": "table"
+        },
+        "name": "query - 16 - Copy - Copy - Copy"
+      }
+    ],
+    "fromTemplateId": "sentinel-ExchangeOnline",
+    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+  }
