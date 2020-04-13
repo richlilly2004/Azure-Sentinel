@@ -6,12 +6,16 @@
         "author": "Rich Lilly, Tom Lilly"
     },
     "parameters": {
-        "Playbook_Name": {
+        "PlaybookName": {
             "defaultValue": "Get-TIfromOTX",
             "type": "string",
             "metadata": {
                 "description": "Name of the playbook to be deployed"
             }
+        },
+        "UserName": {
+            "defaultValue": "<username>@<domain>",
+            "type": "string"
         },
         "AAD_TenantID": {
             "type": "string",
@@ -71,7 +75,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('Playbook_Name')]",
+            "name": "[parameters('PlaybookName')]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "LogicAppsCategory": "security"
