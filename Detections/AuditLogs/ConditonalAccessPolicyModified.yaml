@@ -1,0 +1,27 @@
+id: 3c9083f2-abc5-4120-8dbc-a935c3fc52c8
+name: Conditonal Access Policy Modified
+description: |
+  'A Conditional Access policy has been modified'
+severity: Medium
+requiredDataConnectors:
+  - connectorId: AzureActivity
+    dataTypes:
+      - AuditLogs
+queryFrequency: 1d
+queryPeriod: 1d
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - Persistence
+  - DefenseEvasion
+relevantTechniques:
+  - T1098
+  - T1089
+query: |
+
+AuditLogs
+| where ActivityDisplayName == "Update policy"
+| extend d = parse_json(InitiatedBy)
+| extend IPAddress = tostring(d.user.ipAddress), UserPrincipalName = tostring(d.user.userPrincipalName)
+| extend AccountCustomEntity = UserPrincipalName
+| extend IPCustomEntity = IPAddress
