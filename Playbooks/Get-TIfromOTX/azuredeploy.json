@@ -64,7 +64,8 @@
         }
     },
     "variables": {
-        "expirationTime": "[concat('@{addDays(utcNow(),',parameters('Expiration_Duration'),')}')]"
+        "expirationTime": "[concat('@{addDays(utcNow(),',parameters('Expiration_Duration'),')}')]",
+        "otxModifiedSince": "[concat('@{add',parameters('Recurrence_Units'),'s(utcNow(),-',parameters('Recurrence_Value'),')}')]"
     },
     "resources": [
         {
@@ -376,7 +377,7 @@
                                 },
                                 "method": "GET",
                                 "queries": {
-                                    "modified_since": "@{addDays(utcNow(),-1)}",
+                                    "modified_since": "[variables('otxModifiedSince')]",
                                     "types": "IPv4,domain,hostname,url,email"
                                 },
                                 "uri": "https://otx.alienvault.com/api/v1/indicators/export"
