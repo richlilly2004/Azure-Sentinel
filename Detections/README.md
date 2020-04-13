@@ -10,4 +10,4 @@
   - create the alert rule
 * The rule created will run the query on the scheduled time that was defined, and trigger an alert that will be seen both in the **SecurityAlert** table and in a case in the **Cases** page
  
- For questions or feedback, please contact AzureSentinel@microsoft.com
+For questions or feedback, please contact rich.lilly@outlook.com

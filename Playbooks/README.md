@@ -21,4 +21,4 @@ Once deployment is complete, you will need to authorize each connection.
 You can now edit the playbook in Logic apps.
 
 # Suggestions and feedback
-We value your feedback. Let us know if you run into any problems or share your suggestions and feedback by sending email to rich.lilly@outlook.com
+For questions or feedback, please contact rich.lilly@outlook.com
