@@ -17,6 +17,10 @@
          "TI_AppReg_ClientSecret": {
             "defaultValue": "",
             "type": "String"
+         },
+        "OTX_APIKey": {
+            "defaultValue": "",
+            "type": "String"
         }
     },
     "variables": {},
@@ -326,7 +330,7 @@
                             "type": "Http",
                             "inputs": {
                                 "headers": {
-                                    "X-OTX-API-KEY": "9d549e04879b2806a79289b19084a61d4665ab7286fb76140a26860f1a976d42"
+                                    "X-OTX-API-KEY": "[parameters('OTX_APIKey')]"
                                 },
                                 "method": "GET",
                                 "queries": {
