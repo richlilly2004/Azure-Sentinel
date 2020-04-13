@@ -1,0 +1,26 @@
+id: 4a6c56c4-fd43-41c8-802b-a751dffd0378
+name: DNS Resolution of Malicious IP
+description: |
+  'Client attempted to resolve a DNS name that returned a malicious IP.'
+severity: High
+requiredDataConnectors:
+  - connectorId: DNS
+    dataTypes:
+      - DNSEvents
+queryFrequency: 1h
+queryPeriod: 1h
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - InitialAccess
+  - Exfiltration
+relevantTechniques:
+  - T1048
+query: |
+
+  let timeRange = ago(1h);
+  let threshold = 1;
+DnsEvents
+| where SubType == 'LookupQuery' and isnotempty(MaliciousIP)
+| extend IPCustomEntity = ClientIP
+| extend NameCustomEntity = Name
