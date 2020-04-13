@@ -1,33 +1,71 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-        "metadata":{
+    "contentVersion": "1.0.1.0",
+    "metadata":{
         "comments": "This playbook will get TI data from Alienvault OTX NOTE: You must create an app registration for graph api with appropriate permissions.",
         "author": "Rich Lilly, Tom Lilly"
     },
     "parameters": {
         "Playbook_Name": {
             "defaultValue": "Get-TIfromOTX",
-            "type": "String"
-            },
+            "type": "string",
+            "metadata": {
+                "description": "Name of the playbook to be deployed"
+            }
+        },
         "AAD_TenantID": {
-            "defaultValue": "",
-            "type": "String"
-            },
+            "type": "string",
+            "metadata": {
+                "description": "GUID of the Azure AD Tenant to be used"
+            }
+        },
          "TI_AppReg_ClientID": {
-            "defaultValue": "",
-            "type": "String"
-            },
+            "type": "string",
+            "metadata": {
+                "description": "Client ID to be used to import data into Microsoft services"
+            }
+        },
          "TI_AppReg_ClientSecret": {
-            "defaultValue": "",
-            "type": "String"
-         },
+            "type": "secureString",
+            "metadata": {
+                "description": "Client Secret to be used to import data into Microsoft services"
+            }
+        },
         "OTX_APIKey": {
-            "defaultValue": "",
-            "type": "String"
+            "type": "string",
+            "metadata": {
+                "description": "API Key to be used to authenticate to OTX service"
+            }
+        },
+        "Recurrence_Units": {
+            "type": "string",
+            "allowedValues": [
+                "Day",
+                "Hour"
+            ],
+            "defaultValue": "Day",
+            "metadata": {
+                "description": "Units to use for the recurrence trigger"
+            }
+        },
+        "Recurrence_Value": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Frequency of recurrence trigger"
+            }
+        },
+        "Expiration_Duration": {
+            "type": "int",
+            "defaultValue": 7,
+            "metadata": {
+                "description": "Number of days before expiring imported TIs"
+            }
         }
     },
-    "variables": {},
+    "variables": {
+        "expirationTime": "[concat('@(addDays(utcNow(),',parameters('Expiration_Duration'),'))')]"
+    },
     "resources": [
         {
             "type": "Microsoft.Logic/workflows",
@@ -46,8 +84,8 @@
                     "triggers": {
                         "Recurrence": {
                             "recurrence": {
-                                "frequency": "Day",
-                                "interval": 1
+                                "frequency": "[parameters('Recurrence_Units')]",
+                                "interval": "[parameters('Recurrence_Value')]"
                             },
                             "type": "Recurrence"
                         }
@@ -81,7 +119,7 @@
                                                             "action": "AlertAndBlock",
                                                             "createdBy": "Alientvault OTX",
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
-                                                            "expirationTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationTime": "[variables('expirationTime')]",
                                                             "indicatorType": "DomainName",
                                                             "indicatorValue": "@{items('For_each')?['indicator']}",
                                                             "recommendedActions": "Block and Investigate",
@@ -112,7 +150,7 @@
                                                             "confidence": 0,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "domainName": "@{items('For_each')?['indicator']}",
-                                                            "expirationDateTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
                                                             "killChain": [],
                                                             "malwareFamilyNames": [],
@@ -153,7 +191,7 @@
                                                             "action": "AlertAndBlock",
                                                             "createdBy": "Alientvault OTX",
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
-                                                            "expirationTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationTime": "[variables('expirationTime')]",
                                                             "indicatorType": "IpAddress",
                                                             "indicatorValue": "@{items('For_each')?['indicator']}",
                                                             "recommendedActions": "Block and Investigate",
@@ -183,7 +221,7 @@
                                                             "activityGroupNames": [],
                                                             "confidence": 0,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
-                                                            "expirationDateTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
                                                             "killChain": [],
                                                             "malwareFamilyNames": [],
@@ -225,7 +263,7 @@
                                                             "action": "AlertAndBlock",
                                                             "createdBy": "Alientvault OTX",
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
-                                                            "expirationTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationTime": "[variables('expirationTime')]",
                                                             "indicatorType": "Url",
                                                             "indicatorValue": "@{items('For_each')?['indicator']}",
                                                             "recommendedActions": "Block and Investigate",
@@ -255,7 +293,7 @@
                                                             "activityGroupNames": [],
                                                             "confidence": 0,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
-                                                            "expirationDateTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
                                                             "killChain": [],
                                                             "malwareFamilyNames": [],
@@ -295,7 +333,7 @@
                                                             "confidence": 0,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "emailSenderAddress": "@{items('For_each')?['indicator']}",
-                                                            "expirationDateTime": "@{addDays(utcNow(),7)}",
+                                                            "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
                                                             "killChain": [],
                                                             "malwareFamilyNames": [],
