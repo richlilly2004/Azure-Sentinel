@@ -64,7 +64,7 @@
         }
     },
     "variables": {
-        "expirationTime": "[concat('@(addDays(utcNow(),',parameters('Expiration_Duration'),'))')]"
+        "expirationTime": "[concat('@{addDays(utcNow(),',parameters('Expiration_Duration'),')}')]"
     },
     "resources": [
         {
