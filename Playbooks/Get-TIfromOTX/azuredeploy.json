@@ -65,7 +65,7 @@
     },
     "variables": {
         "expirationTime": "[concat('@{addDays(utcNow(),',parameters('Expiration_Duration'),')}')]",
-        "otxModifiedSince": "[concat('@{add',parameters('Recurrence_Units'),'s(utcNow(),',parameters('Recurrence_Value'),')}')]"
+        "otxModifiedSince": "[concat('@{add',parameters('Recurrence_Units'),'s(utcNow(),-',parameters('Recurrence_Value'),')}')]"
     },
     "resources": [
         {
