@@ -1,0 +1,29 @@
+id: cb331e27-3d71-4b10-86a8-cc334f3247b5
+name: Emergency Account Usage
+description: |
+  'Identifies when a break glass account is used.'
+severity: High
+requiredDataConnectors:
+  - connectorId: AzureActiveDirectory
+    dataTypes:
+      - SigninLogs
+queryFrequency: 1h
+queryPeriod: 1h
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - InitialAccess
+  - Persistence
+relevantTechniques:
+  - T1078
+  - T1098
+query: |
+
+  let timeRange = ago(1h);
+  let threshold = 1;
+SigninLogs
+| where UserPrincipalName  == "ConnectorAccountUPN"
+| where ResultType == "0"
+| where IPAddress != "13.64.198.19" and IPAddress != "13.64.199.41" and IPAddress != "13.91.98.185" and IPAddress != "40.84.47.127"  and IPAddress != "13.93.233.42" and IPAddress != "13.64.196.27" and IPAddress != "104.209.212.150" and IPAddress != "40.70.31.144" and IPAddress != "40.84.59.89" and IPAddress != "52.247.114.245" and IPAddress != "40.84.61.185" and IPAddress != "104.208.219.26" and IPAddress != "40.70.218.171" and IPAddress != "137.116.52.6" and IPAddress != "137.116.89.66" and IPAddress != "20.190.232.189"
+| extend IPCustomEntity = IPAddress
+| extend AccountCustomEntity = UserId
