@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mspOfferName": {
+            "value": "Netrix Managed Services - Azure SentinelaaS"
+        },
+        "mspOfferDescription": {
+            "value": "Netrix Managed Services - Azure SentinelaaS"
+        },
+        "managedByTenantId": {
+            "value": "f224c3c9-5f00-44e8-babd-133e9cd928d1"
+        },
+ 	"rgName": {
+            "value": "rg_sentinel"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+                    "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade"
+                },
+		{
+                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+                    "roleDefinitionId": "87a39d53-fc1b-424a-814c-f7e04687dc9e"
+                },
+		{
+                    "principalId": "f66e5f90-45ed-4276-b59d-5e0cdac36f44",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Readers",
+                    "roleDefinitionId": "8d289c81-5878-46d4-8554-54e1e3d8b5cb"
+                },
+		{
+                    "principalId": "6db32c6b-0d35-4330-a6ab-685bfc93a34e",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Responders",
+                    "roleDefinitionId": "3e150937-b8fe-4cfb-8069-0eaf05ecd056"
+                },
+		{
+                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                },
+		{
+                    "principalId": "f66e5f90-45ed-4276-b59d-5e0cdac36f44",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Readers",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                },
+		{
+                    "principalId": "6db32c6b-0d35-4330-a6ab-685bfc93a34e",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Responders",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                }
+            ]
+        }
+    }
+}
