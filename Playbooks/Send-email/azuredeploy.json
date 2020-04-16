@@ -13,17 +13,12 @@
         "EmailRecipient": {
             "defaultValue": "SOC@contoso.com",
             "type": "string"
-        },
-        "connections_azuresentinel_externalid": {
-            "defaultValue": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/resourceGroups/USE-ALA-RG/providers/Microsoft.Web/connections/azuresentinel",
-            "type": "String"
-        },
-        "connections_office365_1_externalid": {
-            "defaultValue": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/resourceGroups/USE-ALA-RG/providers/Microsoft.Web/connections/office365-1",
-            "type": "String"
         }
     },
-    "variables": {},
+    "variables": {
+        "AzureSentinelConnectionName": "[concat('azuresentinel-', parameters('PlaybookName'))]",
+        "O365ConnectionName": "[concat('o365-', parameters('PlaybookName'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.Logic/workflows",
@@ -104,15 +99,13 @@
                     "$connections": {
                         "value": {
                             "azuresentinel": {
-                                "connectionId": "[parameters('connections_azuresentinel_externalid')]",
-                                "connectionName": "azuresentinel",
-                                "id": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/providers/Microsoft.Web/locations/eastus/managedApis/azuresentinel"
-                            },
+                                "connectionId": "[resourceId('Microsoft.Web/connections', variables('AzureSentinelConnectionName'))]",
+                                "connectionName": "[variables('AzureSentinelConnectionName')]",
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"                            },
                             "office365": {
-                                "connectionId": "[parameters('connections_office365_1_externalid')]",
-                                "connectionName": "office365-1",
-                                "id": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/providers/Microsoft.Web/locations/eastus/managedApis/office365"
-                            }
+                                "connectionId": "[resourceId('Microsoft.Web/connections', variables('O365ConnectionName'))]",
+                                "connectionName": "[variables('O365ConnectionName')]",
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/office365')]"                            }
                         }
                     }
                 }
