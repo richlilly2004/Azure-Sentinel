@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.1.0",
+        "metadata":{
+        "comments": "This playbook will send an e-mail.",
+        "author": "Rich Lilly"
+    },"parameters": {
+        "PlaybookName": {
+            "defaultValue": "Send-email",
+            "type": "String"
+        },
+        "UserName": {
+            "defaultValue": "<username>@<domain>",
+            "type": "string"
+                },
+        "EmailRecipient": {
+            "defaultValue": "SOC@contoso.com",
+            "type": "string"
+        },
+        "connections_azuresentinel_externalid": {
+            "defaultValue": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/resourceGroups/USE-ALA-RG/providers/Microsoft.Web/connections/azuresentinel",
+            "type": "String"
+        },
+        "connections_office365_1_externalid": {
+            "defaultValue": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/resourceGroups/USE-ALA-RG/providers/Microsoft.Web/connections/office365-1",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('PlaybookName')]",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "LogicAppsCategory": "security"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_response_to_an_Azure_Sentinel_alert_is_triggered": {
+                            "type": "ApiConnectionWebhook",
+                            "inputs": {
+                                "body": {
+                                    "callback_url": "@{listCallbackUrl()}"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "path": "/subscribe"
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Alert_-_Get_incident": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/Cases/@{encodeURIComponent(triggerBody()?['SystemAlertId'])}/@{encodeURIComponent(triggerBody()?['WorkspaceSubscriptionId'])}/@{encodeURIComponent(triggerBody()?['WorkspaceId'])}/@{encodeURIComponent(triggerBody()?['WorkspaceResourceGroup'])}"
+                            }
+                        },
+                        "Send_an_email_(V2)": {
+                            "runAfter": {
+                                "Alert_-_Get_incident": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "Body": "<p>Hello Netrix SOC,<br>\n<br>\nYou have an incident from Azure Sentinel. Below is information:<br>\n<br>\n<strong>Alert Name:</strong>@{triggerBody()?['AlertDisplayName']}<br>\n<strong>Description:</strong> @{triggerBody()?['Description']}<br>\n<strong>Severity: </strong>@{body('Alert_-_Get_incident')?['properties']?['Severity']}<br>\n<strong>Resource Group: </strong>@{triggerBody()?['WorkspaceResourceGroup']}<br>\n<strong>Start Time:</strong> @{triggerBody()?['StartTimeUtc']}<br>\n<strong>End Time:</strong> @{triggerBody()?['TimeGenerated']}<br>\n<br>\nPlease review and let us know whether this incident is false positive.<br>\nAzure Sentinel Bot</p>",
+                                    "Importance": "Normal",
+                                    "Subject": "[[[Azure Sentinel] - @{triggerBody()?['AlertDisplayName']} - @{triggerBody()?['TimeGenerated']}",
+                                    "To": "[parameters('EmailRecipient')]"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v2/Mail"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuresentinel": {
+                                "connectionId": "[parameters('connections_azuresentinel_externalid')]",
+                                "connectionName": "azuresentinel",
+                                "id": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/providers/Microsoft.Web/locations/eastus/managedApis/azuresentinel"
+                            },
+                            "office365": {
+                                "connectionId": "[parameters('connections_office365_1_externalid')]",
+                                "connectionName": "office365-1",
+                                "id": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f/providers/Microsoft.Web/locations/eastus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
