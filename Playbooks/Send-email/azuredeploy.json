@@ -1,10 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.1.0",
-        "metadata":{
-        "comments": "This playbook will send an e-mail.",
-        "author": "Rich Lilly"
-    },"parameters": {
+    "contentVersion": "1.0.0.0",
+    "parameters": {
         "PlaybookName": {
             "defaultValue": "Send-email",
             "type": "String"
@@ -12,7 +9,7 @@
         "UserName": {
             "defaultValue": "<username>@<domain>",
             "type": "string"
-                },
+        },
         "EmailRecipient": {
             "defaultValue": "SOC@contoso.com",
             "type": "string"
@@ -32,9 +29,9 @@
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[parameters('PlaybookName')]",
-            "location": "[resourceGroup().location]",
+            "location": "eastus",
             "tags": {
-                "LogicAppsCategory": "security"
+                "OwnerEmail": "rlilly@netrixllc.com"
             },
             "properties": {
                 "state": "Enabled",
