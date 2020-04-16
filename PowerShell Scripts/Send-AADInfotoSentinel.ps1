@@ -1,4 +1,8 @@
-﻿#Required Variables
+﻿#Import into Azure Automation
+#Create variables for Sentinel_CustomerID, Sentinel_SharedKey, TenantID, AAD Account
+#Import Azure AD and OMSIngestionAPI from the Modules Gallery
+
+#Required Variables
 $CustomerID = Get-AutomationVariable -Name 'Sentinel_CustomerID'
 $SharedKey = Get-AutomationVariable -Name 'Sentinel_SharedKey'
 $userlogType = 'AADUsers'
