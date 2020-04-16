@@ -91,7 +91,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where IsManaged == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| count",
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| count",
         "size": 4,
         "title": "Total Hybrid AAD-DJ Devices",
         "timeContext": {
@@ -130,7 +130,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where IsManaged == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", DeviceOSType contains \"Windows 10\", \"Windows 10\", DeviceOSType contains \"Windows\", \"Windows 10\", \"N/A\")\r\n| summarize Count= count() by OSPlatform",
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")\r\n| summarize Count= count() by OSPlatform",
         "size": 4,
         "title": "Hybrid AAD-DJ Devices by Platform",
         "timeContext": {
@@ -162,7 +162,7 @@
           }
         }
       },
-      "customWidth": "25",
+      "customWidth": "40",
       "name": "query - 11"
     },
     {
@@ -201,15 +201,15 @@
           }
         }
       },
-      "customWidth": "15",
+      "customWidth": "10",
       "name": "query - 11 - Copy - Copy"
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where IsManaged == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", DeviceOSType contains \"Windows 10\", \"Windows 10\", DeviceOSType contains \"Windows\", \"Windows 10\", \"N/A\")\r\n| summarize count() by OSPlatform",
-        "size": 2,
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")\r\n| summarize count() by OSPlatform",
+        "size": 1,
         "title": "Hybrid Registration Breakdown",
         "timeContext": {
           "durationMs": 0
@@ -217,16 +217,19 @@
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
-        "visualization": "piechart"
+        "visualization": "piechart",
+        "chartSettings": {
+          "showMetrics": false
+        }
       },
-      "customWidth": "45",
+      "customWidth": "25",
       "name": "query - 11"
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where IsManaged == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", DeviceOSType contains \"Windows 10\", \"Windows 10\", DeviceOSType contains \"Windows\", \"Windows 10\", \"N/A\")\r\n| summarize count() by OSPlatform, bin(TimeGenerated, 1h)",
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")\r\n| summarize count() by OSPlatform, bin(TimeGenerated, 1h)",
         "size": 0,
         "title": "MFA Registration Trend",
         "timeContext": {
@@ -242,7 +245,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where IsManaged == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", DeviceOSType contains \"Windows 10\", \"Windows 10\", DeviceOSType contains \"Windows\", \"Windows 10\", \"N/A\")",
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")",
         "size": 2,
         "title": "Azure AD Devices",
         "timeContext": {
