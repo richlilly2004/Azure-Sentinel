@@ -229,7 +229,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")\r\n| summarize count() by OSPlatform, bin(TimeGenerated, 1h)",
+        "query": "AADDevices\r\n| where Enabled == \"true\"\r\n| where DeviceTrustType == \"ServerAd\"\r\n| extend OSPlatform = case(DeviceOSType contains \"Server\", \"Windows Servers\", \r\n                            DeviceOSType contains \"Windows 10\", \"Windows 10\",  \r\n                            DeviceOSType contains \"Windows 8\", \"Win7/8.1\", \r\n                            DeviceOSType contains \"Windows 7\", \"Win7/8.1\",\r\n                            DeviceOSType == \"Windows\", \"Windows 10\",\r\n                            \"N/A\")\r\n| summarize count() by OSPlatform, bin(TimeGenerated, 1d)",
         "size": 0,
         "title": "MFA Registration Trend",
         "timeContext": {

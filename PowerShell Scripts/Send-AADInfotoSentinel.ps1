@@ -1,6 +1,7 @@
 ﻿#Import into Azure Automation
 #Create variables for Sentinel_CustomerID, Sentinel_SharedKey, TenantID, AAD Account
 #Import Azure AD and OMSIngestionAPI from the Modules Gallery
+#Setup a recurrance schedule at least once a day
 
 #Required Variables
 $CustomerID = Get-AutomationVariable -Name 'Sentinel_CustomerID'
