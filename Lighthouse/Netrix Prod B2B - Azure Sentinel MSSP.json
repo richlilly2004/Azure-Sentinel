@@ -26,12 +26,7 @@
                     "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
                     "roleDefinitionId": "87a39d53-fc1b-424a-814c-f7e04687dc9e"
                 },
-		{
-                    "principalId": "f66e5f90-45ed-4276-b59d-5e0cdac36f44",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Readers",
-                    "roleDefinitionId": "8d289c81-5878-46d4-8554-54e1e3d8b5cb"
-                },
-		{
+				{
                     "principalId": "6db32c6b-0d35-4330-a6ab-685bfc93a34e",
                     "principalIdDisplayName": "SentinelaaS - ClientName Responders",
                     "roleDefinitionId": "3e150937-b8fe-4cfb-8069-0eaf05ecd056"
@@ -40,6 +35,11 @@
                     "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
                     "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
                     "roleDefinitionId": "515c2055-d9d4-4321-b1b9-bd0c9a0f79fe"
+                },
+        {
+                    "principalId": "f66e5f90-45ed-4276-b59d-5e0cdac36f44",
+                    "principalIdDisplayName": "SentinelaaS - ClientName Readers",
+                    "roleDefinitionId": "8d289c81-5878-46d4-8554-54e1e3d8b5cb"
                 }
             ]
         }
