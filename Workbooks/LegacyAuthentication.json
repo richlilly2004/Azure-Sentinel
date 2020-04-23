@@ -23,7 +23,7 @@
             "name": "Subscription",
             "type": 6,
             "isRequired": true,
-            "value": "",
+            "value": "/subscriptions/0586f888-f970-4477-a596-735276317761",
             "typeSettings": {
               "additionalResourceOptions": [],
               "includeAll": true
@@ -41,7 +41,7 @@
             "crossComponentResources": [
               "{Subscription}"
             ],
-            "value": "",
+            "value": "/subscriptions/0586f888-f970-4477-a596-735276317761/resourceGroups/USE-ALA-RG/providers/Microsoft.OperationalInsights/workspaces/netrix",
             "typeSettings": {
               "resourceTypeFilter": {
                 "microsoft.operationalinsights/workspaces": true
@@ -544,6 +544,46 @@
         "json": "Successful Basic Auth\r\n--"
       },
       "name": "text - 5"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SigninLogs\r\n| extend ClientAppUsed = iff(isempty(ClientAppUsed)==true,\"Unknown\" ,ClientAppUsed)\r\n| extend isLegacyAuth = case(ClientAppUsed contains \"Browser\", \"No\", ClientAppUsed contains \"Mobile Apps and Desktop clients\", \"No\", ClientAppUsed contains \"Exchange ActiveSync\", \"No\", ClientAppUsed contains \"Unknown\", \"Unknown\", \"Yes\")\r\n| where isLegacyAuth == \"Yes\"\r\n| where ResultType == \"0\"\r\n| summarize count() by ClientAppUsed, bin(TimeGenerated, 1d)",
+        "size": 0,
+        "title": "Successful Legacy Auth over Time",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "timechart",
+        "graphSettings": {
+          "type": 0,
+          "topContent": {
+            "columnMatch": "isLegacyAuth",
+            "formatter": 1
+          },
+          "centerContent": {
+            "columnMatch": "count_",
+            "formatter": 1,
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "maximumSignificantDigits": 3,
+                "maximumFractionDigits": 2
+              }
+            }
+          }
+        },
+        "chartSettings": {
+          "showLegend": true
+        }
+      },
+      "name": "query - 13"
     },
     {
       "type": 3,
