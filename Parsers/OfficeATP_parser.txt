@@ -19,4 +19,4 @@
 //
 O365API_CL
 | where Workload_s == "ThreatIntelligence"
-| project TimeGenerated, DetectionMethod=DetectionMethod_s, EventDeepLink=EventDeepLink_s, InternetMessageId=InternetMessageId_s, MessageTime=MessageTime_t, NetworkMessageId=NetworkMessageId_g, P1Sender=P1Sender_s, P2Sender_s, Recipients=Recipients_s, SenderIP=SenderIp_s, Subject=Subject_s, Verdict=Verdict_s, ObjectId=ObjectId_s
+| project TimeGenerated, MessageTime=MessageTime_t, DetectionMethod=DetectionMethod_s, Verdict=Verdict_s, P1Sender=P1Sender_s, P2Sender_s, SenderIP=SenderIp_s, Recipients=Recipients_s, Subject=Subject_s, EventDeepLink=EventDeepLink_s, InternetMessageId=InternetMessageId_s, NetworkMessageId=NetworkMessageId_g, ObjectId=ObjectId_s
