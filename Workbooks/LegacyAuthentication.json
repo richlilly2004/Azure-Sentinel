@@ -23,7 +23,7 @@
             "name": "Subscription",
             "type": 6,
             "isRequired": true,
-            "value": "",
+            "value": "/subscriptions/0586f888-f970-4477-a596-735276317761",
             "typeSettings": {
               "additionalResourceOptions": [],
               "includeAll": true
@@ -41,7 +41,7 @@
             "crossComponentResources": [
               "{Subscription}"
             ],
-            "value": "",
+            "value": "/subscriptions/0586f888-f970-4477-a596-735276317761/resourceGroups/USE-ALA-RG/providers/Microsoft.OperationalInsights/workspaces/netrix",
             "typeSettings": {
               "resourceTypeFilter": {
                 "microsoft.operationalinsights/workspaces": true
@@ -897,6 +897,65 @@
       },
       "customWidth": "33",
       "name": "query - 6 - Copy - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SigninLogs\r\n| extend ClientAppUsed = iff(isempty(ClientAppUsed)==true,\"Unknown\" ,ClientAppUsed)\r\n| extend isLegacyAuth = case(ClientAppUsed contains \"Browser\", \"No\", ClientAppUsed contains \"Mobile Apps and Desktop clients\", \"No\", ClientAppUsed contains \"Exchange ActiveSync\", \"No\", ClientAppUsed contains \"Unknown\", \"Unknown\", \"Yes\")\r\n| where isLegacyAuth == \"Yes\"\r\n| where ResultType == \"0\"\r\n| extend mergeCountry = toupper(LocationDetails.countryOrRegion)\r\n| summarize  IPaddress = make_set(IPAddress), count() by UserPrincipalName,  ClientAppUsed, tostring(CountryOrRegion=mergeCountry) //table\r\n| order by count_ desc",
+        "size": 0,
+        "title": "Legacy authentications details",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "UserPrincipalName",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "ClientAppUsed",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "CountryOrRegion",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "IPaddress",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "count_",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "coldHot",
+                "showIcon": true
+              }
+            }
+          ]
+        }
+      },
+      "name": "query - 14"
     }
   ],
   "fromTemplateId": "sentinel-UserWorkbook",
