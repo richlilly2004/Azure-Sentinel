@@ -1,0 +1,27 @@
+// Microsoft O365 DLP Parser
+// Last Updated Date: April 27, 2020
+//
+//This parser parses Office 365 Management API Audit Events and extract DLP Events based events and their various components. It is assumed that Audit logging is enabled in the O365 tenant and that DLP.All events are being collected via the Office 365 Management Activity API.
+// https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference
+//
+// Parser Notes:
+// 1. This parser assumes logs are collected into a custom log table entitled O365API_CL.
+//
+// Usage Instruction : 
+// Paste below query in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. To work with pre-built DLP queries this Function should be given the alias of O365DLP.
+// Functions usually takes 10-15 minutes to activate. You can then use function alias from any other queries (e.g. O365DLP | take 10).
+//
+// References : 
+// Using functions in Azure monitor log queries : https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/functions
+// Tech Community Blog on KQL Functions : https://techcommunity.microsoft.com/t5/Azure-Sentinel/Using-KQL-functions-to-speed-up-analysis-in-Azure-Sentinel/ba-p/712381
+// Tech Community Blog on Teams data: https://techcommunity.microsoft.com/t5/azure-sentinel/protecting-your-teams-with-azure-sentinel/ba-p/1265761
+//
+//
+O365API_CL
+| where Operation_s == "DlpRuleMatch"
+| extend PolicyName_ = tostring(parse_json(PolicyDetails_s)[0].PolicyName)
+| extend Actions_ = tostring(parse_json(tostring(parse_json(PolicyDetails_s)[0].Rules))[0].Actions)
+| extend RuleMode_ = tostring(parse_json(tostring(parse_json(PolicyDetails_s)[0].Rules))[0].RuleMode)
+| extend RuleName_ = tostring(parse_json(tostring(parse_json(PolicyDetails_s)[0].Rules))[0].RuleName) 
+| extend Severity_ = tostring(parse_json(tostring(parse_json(PolicyDetails_s)[0].Rules))[0].Severity)
+| project TimeGenerated, Workload=Workload_s, IncidentId=IncidentId_g, PolicyName=PolicyName_, Actions=Actions_, RuleMode=RuleMode_, RuleName=RuleName_, Severity=Severity_, SensitiveInfoDetectionIsIncluded=SensitiveInfoDetectionIsIncluded_b, MailFrom=ExchangeMetaData_From_s, MailTo=ExchangeMetaData_To_s, MailCC=ExchangeMetaData_CC_s, MailSubject=ExchangeMetaData_Subject_s
