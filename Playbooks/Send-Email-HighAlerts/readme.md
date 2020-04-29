@@ -1,4 +1,4 @@
-# Send-email
+# Send-Email-HighAlerts
 author: Rich Lilly
 
 This playbook will send an e-mail.
