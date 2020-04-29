@@ -1,0 +1,120 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_Email_HighAlerts_name": {
+            "defaultValue": "Email-HighAlerts",
+            "type": "String"
+        },
+        "connections_azuremonitorlogs_externalid": {
+            "defaultValue": "/subscriptions/0586f888-f970-4477-a596-735276317761/resourceGroups/RG_Sentinel/providers/Microsoft.Web/connections/azuremonitorlogs",
+            "type": "String"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "/subscriptions/0586f888-f970-4477-a596-735276317761/resourceGroups/RG_Sentinel/providers/Microsoft.Web/connections/office365",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_Email_HighAlerts_name')]",
+            "location": "northcentralus",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 5
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "For_each": {
+                            "foreach": "@body('Run_query_and_list_results')?['value']",
+                            "actions": {
+                                "Send_an_email_(V2)": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>Hello Netrix SOC,<br>\n<br>\nYou have an incident from Azure Sentinel. Below is information:<br>\n<br>\nAlert Name: @{items('For_each')?['DisplayName']}<br>\nDescription: @{items('For_each')?['Description']}<br>\nSeverity: @{items('For_each')?['AlertSeverity']}<br>\nResource Group: @{items('For_each')?['WorkspaceResourceGroup']}<br>\nStart Time: @{items('For_each')?['StartTime']}<br>\nEnd Time: @{items('For_each')?['EndTime']}<br>\nEntities: @{items('For_each')?['Entities']}<br>\n<br>\nPlease review and let us know whether this incident is false positive.<br>\n<br>\nAzure Sentinel Bot</p>",
+                                            "From": "SentinelAlerts@netrixllc.com",
+                                            "Importance": "Normal",
+                                            "Subject": "[[[Azure Sentinel] - @{items('For_each')?['AlertSeverity']} - @{items('For_each')?['DisplayName']} - @{items('For_each')?['TimeGenerated']}",
+                                            "To": "rlilly@netrixllc.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Run_query_and_list_results": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Run_query_and_list_results": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "SecurityAlert\n| where TimeGenerated > ago(5min)\n| where AlertSeverity == \"High\"",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuremonitorlogs']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/queryData",
+                                "queries": {
+                                    "resourcegroups": "USE-ALA-RG",
+                                    "resourcename": "netrix",
+                                    "resourcetype": "Log Analytics Workspace",
+                                    "subscriptions": "0586f888-f970-4477-a596-735276317761",
+                                    "timerange": "Set in query"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuremonitorlogs": {
+                                "connectionId": "[parameters('connections_azuremonitorlogs_externalid')]",
+                                "connectionName": "azuremonitorlogs",
+                                "id": "/subscriptions/0586f888-f970-4477-a596-735276317761/providers/Microsoft.Web/locations/northcentralus/managedApis/azuremonitorlogs"
+                            },
+                            "office365": {
+                                "connectionId": "[parameters('connections_office365_externalid')]",
+                                "connectionName": "office365",
+                                "id": "/subscriptions/0586f888-f970-4477-a596-735276317761/providers/Microsoft.Web/locations/northcentralus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
