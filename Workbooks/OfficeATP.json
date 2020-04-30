@@ -266,7 +266,10 @@
         "resourceType": "microsoft.operationalinsights/workspaces",
         "crossComponentResources": [
           "{Workspace}"
-        ]
+        ],
+        "gridSettings": {
+          "filter": true
+        }
       },
       "name": "query - 3"
     }
