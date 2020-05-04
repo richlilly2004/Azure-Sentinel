@@ -1,0 +1,337 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Windows Virtual Desktop"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "12ee4b9a-96a1-4439-8b87-7f503e24ce78",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "value": "/subscriptions/e4996d64-b8fc-48af-9298-98eb723a3c1f",
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "includeAll": true
+            },
+            "resourceType": "microsoft.insights/components"
+          },
+          {
+            "id": "a92547c7-0c8d-40b9-b527-7b1b3dfd826f",
+            "version": "KqlParameterItem/1.0",
+            "name": "Workspace",
+            "type": 5,
+            "isRequired": true,
+            "query": "where type =~ 'microsoft.operationalinsights/workspaces'\r\n| project id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "value": "",
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": []
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "2e36397a-ad0a-4b82-a6fe-bf1121bfda92",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 604800000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                },
+                {
+                  "durationMs": 5184000000
+                },
+                {
+                  "durationMs": 7776000000
+                }
+              ],
+              "allowCustom": true
+            },
+            "resourceType": "microsoft.insights/components"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 3"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Connections"
+      },
+      "name": "text - 9 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDConnections\r\n| summarize dcount(CorrelationId) by bin(TimeGenerated, 1d)",
+        "size": 1,
+        "title": "Connections per Day",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "timechart",
+        "sortBy": []
+      },
+      "name": "query - 2 - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDConnections\r\n|sort by TimeGenerated asc, CorrelationId ",
+        "size": 1,
+        "title": "Connections",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//To get a list of connections made by your users\r\n\r\nWVDConnections \r\n| project-away TenantId,SourceSystem \r\n| summarize arg_max(TimeGenerated, *), StartTime =  min(iff(State== 'Started', TimeGenerated , datetime(null) )), ConnectTime = min(iff(State== 'Connected', TimeGenerated , datetime(null) ))   by CorrelationId \r\n| join kind=leftouter ( \r\n    WVDErrors \r\n    |summarize Errors=makelist(pack('Code', Code, 'CodeSymbolic', CodeSymbolic, 'Time', TimeGenerated, 'Message', Message ,'ServiceError', ServiceError, 'Source', Source)) by CorrelationId \r\n    ) on CorrelationId     \r\n| join kind=leftouter ( \r\n   WVDCheckpoints \r\n   | summarize Checkpoints=makelist(pack('Time', TimeGenerated, 'Name', Name, 'Parameters', Parameters, 'Source', Source)) by CorrelationId \r\n   | mv-apply Checkpoints on \r\n    ( \r\n        order by todatetime(Checkpoints['Time']) asc \r\n        | summarize Checkpoints=makelist(Checkpoints) \r\n    ) \r\n   ) on CorrelationId \r\n| project-away CorrelationId1, CorrelationId2 \r\n| order by  TimeGenerated desc ",
+        "size": 1,
+        "title": "Connections Completed by Users",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "gridSettings": {
+          "filter": true,
+          "sortBy": [
+            {
+              "itemKey": "CorrelationId",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "CorrelationId",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "name": "query - 2 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//To get a list of connections made by your users\r\n\r\nWVDConnections \r\n| project-away TenantId,SourceSystem \r\n| summarize arg_max(TimeGenerated, *), StartTime =  min(iff(State== 'Started', TimeGenerated , datetime(null) )), ConnectTime = min(iff(State== 'Connected', TimeGenerated , datetime(null) ))   by CorrelationId \r\n| join kind=leftouter ( \r\n    WVDErrors \r\n    |summarize Errors=makelist(pack('Code', Code, 'CodeSymbolic', CodeSymbolic, 'Time', TimeGenerated, 'Message', Message ,'ServiceError', ServiceError, 'Source', Source)) by CorrelationId \r\n    ) on CorrelationId     \r\n| join kind=leftouter ( \r\n   WVDCheckpoints \r\n   | summarize Checkpoints=makelist(pack('Time', TimeGenerated, 'Name', Name, 'Parameters', Parameters, 'Source', Source)) by CorrelationId \r\n   | mv-apply Checkpoints on \r\n    ( \r\n        order by todatetime(Checkpoints['Time']) asc \r\n        | summarize Checkpoints=makelist(Checkpoints) \r\n    ) \r\n   ) on CorrelationId \r\n| summarize count() by UserName",
+        "size": 1,
+        "title": "Top Users",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "sortBy": []
+      },
+      "customWidth": "33",
+      "name": "query - 2 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let Events = WVDConnections; \r\nEvents \r\n| where State == \"Connected\" \r\n| project CorrelationId , UserName, ResourceAlias , StartTime=TimeGenerated \r\n| join (Events \r\n| where State == \"Completed\" \r\n| project EndTime=TimeGenerated, CorrelationId) \r\non CorrelationId \r\n| project Duration = EndTime - StartTime, UserName, ResourceAlias \r\n| sort by Duration asc",
+        "size": 1,
+        "title": "Session Duration per User",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "sortBy": []
+      },
+      "customWidth": "33",
+      "name": "query - 2 - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Feeds"
+      },
+      "name": "text - 9 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDFeeds  \r\n| project-away TenantId,SourceSystem  \r\n| join kind=leftouter (  \r\n    WVDErrors  \r\n    |summarize Errors=makelist(pack('Code', Code, 'CodeSymbolic', CodeSymbolic, 'Time', TimeGenerated, 'Message', Message ,'ServiceError', ServiceError, 'Source', Source)) by CorrelationId  \r\n    ) on CorrelationId      \r\n| join kind=leftouter (  \r\n   WVDCheckpoints  \r\n   | summarize Checkpoints=makelist(pack('Time', TimeGenerated, 'Name', Name, 'Parameters', Parameters, 'Source', Source)) by CorrelationId  \r\n   | mv-apply Checkpoints on  \r\n    (  \r\n        order by todatetime(Checkpoints['Time']) asc  \r\n        | summarize Checkpoints=makelist(Checkpoints)  \r\n    )  \r\n   ) on CorrelationId  \r\n| project-away CorrelationId1, CorrelationId2  \r\n| order by  TimeGenerated desc",
+        "size": 1,
+        "title": "Feed Activity",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "name": "query - 2 - Copy"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Errors"
+      },
+      "name": "text - 9"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDErrors",
+        "size": 1,
+        "title": "All Errors",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "sortBy": []
+      },
+      "name": "query - 2 - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDErrors \r\n| where CodeSymbolic ==\"ErrorSymbolicCode\" \r\n| summarize count(UserName) by CodeSymbolic ",
+        "size": 1,
+        "title": "Specific Errors",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "sortBy": []
+      },
+      "name": "query - 2 - Copy - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDErrors \r\n| where ServiceError ==\"false\" \r\n| summarize usercount = count(UserName) by CodeSymbolic \r\n| sort by usercount desc\r\n| render barchart ",
+        "size": 1,
+        "title": "Occurrence of an Error Across All Users",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "sortBy": []
+      },
+      "name": "query - 2 - Copy - Copy - Copy - Copy - Copy - Copy - Copy"
+    }
+  ],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
