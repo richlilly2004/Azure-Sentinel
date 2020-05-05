@@ -201,6 +201,22 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
+        "query": "let timeRange=ago(7d);\r\n  SigninLogs\r\n  | where TimeGenerated >= timeRange\r\n  | where AppDisplayName contains \"Windows Virtual Desktop\"\r\n  | where ResultType in ( \"50126\" , \"50020\", \"50034\", \"50074\", \"50076\", \"50131\")\r\n  | extend OS = DeviceDetail.operatingSystem, Browser = DeviceDetail.browser\r\n  | extend StatusCode = tostring(Status.errorCode), StatusDetails = tostring(Status.additionalDetails)\r\n  | extend State = tostring(LocationDetails.state), City = tostring(LocationDetails.city)\r\n  | summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated), IPAddresses = makeset(IPAddress), DistinctIPCount = dcount(IPAddress), \r\n  makeset(OS), makeset(Browser), makeset(City), AttemptCount = count() \r\n  by UserDisplayName, UserPrincipalName, AppDisplayName, ResultType, ResultDescription, StatusCode, StatusDetails, Location, State\r\n  | extend timestamp = StartTimeUtc, AccountCustomEntity = UserPrincipalName\r\n  | sort by AttemptCount",
+        "size": 0,
+        "title": "Access attempts Failed",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "query - 14"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
         "query": "//To get a list of connections made by your users\r\n\r\nWVDConnections \r\n| project-away TenantId,SourceSystem \r\n| summarize arg_max(TimeGenerated, *), StartTime =  min(iff(State== 'Started', TimeGenerated , datetime(null) )), ConnectTime = min(iff(State== 'Connected', TimeGenerated , datetime(null) ))   by CorrelationId \r\n| join kind=leftouter ( \r\n    WVDErrors \r\n    |summarize Errors=makelist(pack('Code', Code, 'CodeSymbolic', CodeSymbolic, 'Time', TimeGenerated, 'Message', Message ,'ServiceError', ServiceError, 'Source', Source)) by CorrelationId \r\n    ) on CorrelationId     \r\n| join kind=leftouter ( \r\n   WVDCheckpoints \r\n   | summarize Checkpoints=makelist(pack('Time', TimeGenerated, 'Name', Name, 'Parameters', Parameters, 'Source', Source)) by CorrelationId \r\n   | mv-apply Checkpoints on \r\n    ( \r\n        order by todatetime(Checkpoints['Time']) asc \r\n        | summarize Checkpoints=makelist(Checkpoints) \r\n    ) \r\n   ) on CorrelationId \r\n| summarize count() by UserName",
         "size": 1,
         "title": "Top Users",
@@ -330,6 +346,38 @@
         "sortBy": []
       },
       "name": "query - 2 - Copy - Copy - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let timeRange=ago(1h);\r\nlet Threshold = 1;\r\nlet Userlogintomultihostpool =\r\nWVDConnections\r\n| where TimeGenerated >= timeRange \r\n| summarize dcount(_ResourceId)  by UserName\r\n| where dcount__ResourceId  > Threshold\r\n| project UserName ;\r\nWVDConnections\r\n| where TimeGenerated >= timeRange \r\n| where UserName in (Userlogintomultihostpool)\r\n| project  _ResourceId, UserName, ClientIPAddress, ClientType, TenantId, TimeGenerated, Type, SessionHostIPAddress\r\n| sort by UserName asc",
+        "size": 0,
+        "title": "User trying to log on to multiple host pools",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "query - 15"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let timeRange=ago(7d);\r\nlet RareOperations = dynamic([\"Consent to application\" ,  \"Add delegated permission grant\"]);\r\nAuditLogs \r\n| where TimeGenerated >= timeRange\r\n      | extend ModProps = TargetResources.[0].modifiedProperties\r\n      | extend IpAddress = iff(isnotempty(tostring(parse_json(tostring(InitiatedBy.user)).ipAddress)), \r\n      tostring(parse_json(tostring(InitiatedBy.user)).ipAddress), tostring(parse_json(tostring(InitiatedBy.app)).ipAddress))\r\n      | extend InitiatedBy = iff(isnotempty(tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)), \r\n      tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName), tostring(parse_json(tostring(InitiatedBy.app)).displayName))\r\n      | extend TargetResourceName = tolower(tostring(TargetResources.[0].displayName))\r\n      | mvexpand ModProps\r\n      | extend PropertyName = tostring(ModProps.displayName), newValue = replace(\"\\\"\",\"\",tostring(ModProps.newValue))\r\n      | where OperationName in (RareOperations)\r\n      | where TargetResourceName contains \"windows virtual desktop\"\r\n      | summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated), OperationCount = count() \r\n  by Type, InitiatedBy, IpAddress, TargetResourceName, Category, OperationName, PropertyName, newValue, CorrelationId, Id",
+        "size": 0,
+        "title": "Azure Audit Operations - WVD",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "query - 16"
     }
   ],
   "fromTemplateId": "sentinel-UserWorkbook",
