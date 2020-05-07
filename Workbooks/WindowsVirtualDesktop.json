@@ -139,7 +139,28 @@
         "visualization": "timechart",
         "sortBy": []
       },
+      "customWidth": "70",
       "name": "query - 2 - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WVDConnections \r\n| where State =~ \"Started\" and Type =~\"WVDConnections\" \r\n| extend CState=iff(SessionHostOSVersion==\"<>\",\"Failure\",\"Success\") | summarize Count=count() by State=CState\r\n| render piechart ",
+        "size": 1,
+        "title": "Count of brokered sessions by state",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "customWidth": "30",
+      "name": "query - 17"
     },
     {
       "type": 3,
@@ -201,6 +222,41 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
+        "query": "WVDConnections \r\n| where State =~ \"Started\" and Type =~\"WVDConnections\" \r\n| extend Multi=split(_ResourceId, \"/\") | extend CState=iff(SessionHostOSVersion==\"<>\",\"Failure\",\"Success\")\r\n| where CState=~\"Failure\" \r\n| project TimeStamp=TimeGenerated, UserName, ResourceGroup=Multi[4], HostPool=Multi[8],ResourceAlias, SessionHost=SessionHostName, ClientOS=ClientOS, ClientWvdVersion=ClientVersion, CorrelationId\r\n| order by TimeStamp desc",
+        "size": 0,
+        "title": "Failed Connections",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "query - 14 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//Failed connection with details\r\nWVDConnections | where State =~ \"Started\" and Type =~\"WVDConnections\" \r\n| extend Multi=split(_ResourceId, \"/\") | extend CState=iff(SessionHostOSVersion==\"<>\",\"Failure\",\"Success\")\r\n| where CState =~\"Failure\"\r\n| order by TimeGenerated desc\r\n| where State =~ \"Started\" | extend Multi=split(_ResourceId, \"/\") \r\n| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion==\"<>\",\"Failure\",\"Success\"), CorrelationId, TimeGenerated\r\n| join kind= leftouter (\r\n    WVDErrors \r\n) on CorrelationId\r\n| extend DurationFromLogon=datetime_diff(\"Second\",TimeGenerated1,TimeGenerated)\r\n| project  TimeStamp=TimeGenerated, DurationFromLogon, UserName, ResourceAlias ,SessionHost=SessionHostName ,Source ,CodeSymbolic , ErrorMessage=Message, ErrorCode=Code, ErrorSource=Source ,ServiceError, CorrelationId\r\n| order by TimeStamp desc",
+        "size": 0,
+        "title": "Failed Connections details",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "name": "query - 14 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
         "query": "let timeRange=ago(7d);\r\n  SigninLogs\r\n  | where TimeGenerated >= timeRange\r\n  | where AppDisplayName contains \"Windows Virtual Desktop\"\r\n  | where ResultType in ( \"50126\" , \"50020\", \"50034\", \"50074\", \"50076\", \"50131\")\r\n  | extend OS = DeviceDetail.operatingSystem, Browser = DeviceDetail.browser\r\n  | extend StatusCode = tostring(Status.errorCode), StatusDetails = tostring(Status.additionalDetails)\r\n  | extend State = tostring(LocationDetails.state), City = tostring(LocationDetails.city)\r\n  | summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated), IPAddresses = makeset(IPAddress), DistinctIPCount = dcount(IPAddress), \r\n  makeset(OS), makeset(Browser), makeset(City), AttemptCount = count() \r\n  by UserDisplayName, UserPrincipalName, AppDisplayName, ResultType, ResultDescription, StatusCode, StatusDetails, Location, State\r\n  | extend timestamp = StartTimeUtc, AccountCustomEntity = UserPrincipalName\r\n  | sort by AttemptCount",
         "size": 0,
         "title": "Access attempts Failed",
@@ -256,6 +312,28 @@
       "name": "query - 2 - Copy - Copy - Copy - Copy"
     },
     {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//Session logon furation by host pool\r\nWVDConnections \r\n| where Type =~\"WVDConnections\" and State =~ \"Started\" | extend Multi=split(_ResourceId, \"/\") | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==\"<>\",\"Failure\",\"Success\"), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],\".\", HP=Multi[8])) \r\n| join kind= leftouter (\r\n    WVDCheckpoints \r\n) on CorrelationId\r\n| extend DurationFromLogon=datetime_diff(\"Second\",TimeGenerated1,TimeGenerated)\r\n| where Name=~\"RdpStackLogon\" \r\n| project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon\r\n| summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s \r\n| render columnchart kind=unstacked ",
+        "size": 1,
+        "title": "Session Duration per Host Pool",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "unstackedbar",
+        "sortBy": []
+      },
+      "customWidth": "33",
+      "name": "query - 2 - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
       "type": 1,
       "content": {
         "json": "## Feeds"
@@ -303,7 +381,20 @@
         "crossComponentResources": [
           "{Workspace}"
         ],
-        "sortBy": []
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "TimeGenerated",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "TimeGenerated",
+            "sortOrder": 1
+          }
+        ]
       },
       "name": "query - 2 - Copy - Copy - Copy - Copy - Copy"
     },
@@ -378,6 +469,25 @@
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
       "name": "query - 16"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//Administrative activities over time\r\nWVDManagement \r\n| summarize Count=count() by bin(TimeGenerated,15)\r\n| render scatterchart ",
+        "size": 0,
+        "title": "Administrative activities over time",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "name": "query - 21"
     }
   ],
   "fromTemplateId": "sentinel-UserWorkbook",
