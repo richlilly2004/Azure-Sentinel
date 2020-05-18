@@ -17,29 +17,44 @@
         "authorizations": {
             "value": [
                 {
-                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+                    "principalId": "93cfa6a1-6e6d-43e4-8a97-e054d8fa5b9d",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Contributors",
                     "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade"
                 },
 		{
-                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+                    "principalId": "93cfa6a1-6e6d-43e4-8a97-e054d8fa5b9d",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Contributors",
                     "roleDefinitionId": "87a39d53-fc1b-424a-814c-f7e04687dc9e"
                 },
-				{
-                    "principalId": "6db32c6b-0d35-4330-a6ab-685bfc93a34e",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Responders",
+        {
+                    "principalId": "93cfa6a1-6e6d-43e4-8a97-e054d8fa5b9d",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Contributors",
+                    "roleDefinitionId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                },		
+        {
+                    "principalId": "a70a7bf0-cbaa-43d5-917b-c7a603ac7850",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Responders",
                     "roleDefinitionId": "3e150937-b8fe-4cfb-8069-0eaf05ecd056"
                 },
-		{
-                    "principalId": "0caa558a-6224-4c3d-872d-46a7e9a5dfaf",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Contributors",
+        {
+                    "principalId": "a70a7bf0-cbaa-43d5-917b-c7a603ac7850",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Responders",
                     "roleDefinitionId": "515c2055-d9d4-4321-b1b9-bd0c9a0f79fe"
                 },
         {
-                    "principalId": "f66e5f90-45ed-4276-b59d-5e0cdac36f44",
-                    "principalIdDisplayName": "SentinelaaS - ClientName Readers",
+                    "principalId": "a70a7bf0-cbaa-43d5-917b-c7a603ac7850",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Responders",
+                    "roleDefinitionId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
+                },
+        {
+                    "principalId": "42732c84-06da-460b-9193-9d84be5d1d90",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Reader",
                     "roleDefinitionId": "8d289c81-5878-46d4-8554-54e1e3d8b5cb"
+                },
+        {
+                    "principalId": "42732c84-06da-460b-9193-9d84be5d1d90",
+                    "principalIdDisplayName": "SentinelaaS - CLIENTNAME Reader",
+                    "roleDefinitionId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
                 }
             ]
         }
