@@ -152,7 +152,7 @@
                                                         "body": {
                                                             "action": "alert",
                                                             "activityGroupNames": [],
-                                                            "confidence": 0,
+                                                            "confidence": 100,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "domainName": "@{items('For_each')?['indicator']}",
                                                             "expirationDateTime": "[variables('expirationTime')]",
@@ -224,7 +224,7 @@
                                                         "body": {
                                                             "action": "alert",
                                                             "activityGroupNames": [],
-                                                            "confidence": 0,
+                                                            "confidence": 100,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
@@ -296,7 +296,7 @@
                                                         "body": {
                                                             "action": "alert",
                                                             "activityGroupNames": [],
-                                                            "confidence": 0,
+                                                            "confidence": 100,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "expirationDateTime": "[variables('expirationTime')]",
                                                             "externalId": "@{items('For_each')?['id']}",
@@ -335,7 +335,7 @@
                                                         "body": {
                                                             "action": "alert",
                                                             "activityGroupNames": [],
-                                                            "confidence": 0,
+                                                            "confidence": 100,
                                                             "description": "OTX Threat Indicator - @{items('For_each')?['type']}",
                                                             "emailSenderAddress": "@{items('For_each')?['indicator']}",
                                                             "expirationDateTime": "[variables('expirationTime')]",
