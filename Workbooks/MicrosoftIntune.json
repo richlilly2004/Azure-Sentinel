@@ -117,8 +117,7 @@
                 }
               ],
               "allowCustom": true
-            },
-            "resourceType": "microsoft.insights/components"
+            }
           }
         ],
         "style": "pills",
@@ -143,7 +142,7 @@
         "aggregation": 3,
         "showAnnotations": true,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -175,7 +174,7 @@
         "query": "IntuneAuditLogs\r\n| summarize OperationCount=count() by OperationName \r\n| sort by OperationCount desc",
         "size": 0,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -203,7 +202,7 @@
         "query": "IntuneAuditLogs\r\n| extend myJson=todynamic(Properties)\r\n| summarize OperationCount=count() by Identity \r\n| sort by OperationCount desc",
         "size": 0,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -254,7 +253,7 @@
         "query": "IntuneAuditLogs\r\n| where OperationName contains \"ManagedDevice\" \r\n| summarize OperationCount=count() by OperationName\r\n| sort by OperationCount desc ",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -282,7 +281,7 @@
         "query": "IntuneAuditLogs\r\n| where OperationName contains \"ManagedDevice\" \r\n| summarize OperationCount=count() by Identity\r\n| sort by OperationCount desc ",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -344,7 +343,7 @@
     {
       "type": 1,
       "content": {
-        "json": "## Enrollment Statistics"
+        "json": "## Enrollment Type"
       },
       "customWidth": "50",
       "name": "text - 3 - Copy - Copy - Copy - Copy"
@@ -356,7 +355,7 @@
         "query": "IntuneOperationalLogs\r\n| where  OperationName == \"Enrollment\"\r\n| summarize count() by Result",
         "size": 2,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -413,7 +412,7 @@
         "query": "IntuneOperationalLogs\r\n| where  OperationName == \"Enrollment\" \r\n| where Result == \"Fail\"\r\n| extend myJson=todynamic(Properties)\r\n| extend FailureReason = tostring(myJson [\"FailureReason\"])\r\n| summarize OperationCount=count() by FailureReason\r\n| sort by OperationCount desc",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -441,7 +440,7 @@
         "query": "IntuneOperationalLogs\r\n| where  OperationName == \"Enrollment\" \r\n| where Result == \"Fail\"\r\n| extend myJson=todynamic(Properties)\r\n| extend Platform = tostring(myJson [\"Os\"])\r\n| summarize OperationCount=count() by Platform \r\n| sort by OperationCount desc",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -476,7 +475,7 @@
         "query": "IntuneOperationalLogs\r\n| where  OperationName == \"Enrollment\" \r\n| where Result == \"Fail\" \r\n| extend myJson=todynamic(Properties)\r\n| extend EnrollmentType = tostring(myJson [\"EnrollmentType\"])\r\n| summarize OperationCount=count() by EnrollmentType \r\n| sort by OperationCount desc",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -518,7 +517,7 @@
         "size": 2,
         "showAnnotations": true,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -550,7 +549,7 @@
         "query": "let ComplianceLogs=\r\nIntuneOperationalLogs \r\n| where OperationName == \"Compliance\" \r\n| project TimeGenerated, Properties;\r\nComplianceLogs\r\n| sort by TimeGenerated desc\r\n| join (\r\nComplianceLogs\r\n| extend myJson = todynamic(Properties)\r\n| project-away Properties\r\n| extend IntuneDeviceId=tostring(myJson[\"IntuneDeviceId\"]) \r\n| project TimeGenerated, IntuneDeviceId\r\n| summarize TimeGenerated=max(TimeGenerated) by IntuneDeviceId    \r\n) on TimeGenerated\r\n| project-away TimeGenerated1, IntuneDeviceId  \r\n| extend myJson=todynamic(Properties)\r\n| project-away Properties\r\n| extend Description=tostring(myJson[\"Description\"])\r\n| extend Description=tostring(extract(\"(.*?)_IID_.*\", 1, tostring(Description)))\r\n| extend Reason = tostring(extract(\"(.*?)\\\\.(.*)\", 2, tostring(Description)))\r\n| summarize FailureCount=count() by Reason \r\n| sort by FailureCount desc",
         "size": 1,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -578,7 +577,7 @@
         "query": "let ComplianceLogs=\r\nIntuneOperationalLogs \r\n| where OperationName == \"Compliance\" \r\n| project TimeGenerated, Properties;\r\nComplianceLogs\r\n| sort by TimeGenerated desc\r\n| join (\r\nComplianceLogs\r\n| extend myJson = todynamic(Properties)\r\n| project-away Properties\r\n| extend IntuneDeviceId=tostring(myJson[\"IntuneDeviceId\"]) \r\n| project TimeGenerated, IntuneDeviceId\r\n| summarize TimeGenerated=max(TimeGenerated) by IntuneDeviceId    \r\n) on TimeGenerated\r\n| project-away TimeGenerated1, IntuneDeviceId  \r\n| extend myJson=todynamic(Properties)\r\n| project-away Properties\r\n| extend DeviceOperatingSystem=tostring(myJson[\"DeviceOperatingSystem\"]) \r\n| summarize FailureCount=count() by DeviceOperatingSystem\r\n| sort by FailureCount desc",
         "size": 2,
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 604800000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -599,6 +598,9 @@
       "customWidth": "50",
       "name": "query - 8"
     }
+  ],
+  "fallbackResourceIds": [
+    ""
   ],
   "fromTemplateId": "sentinel-UserWorkbook",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
