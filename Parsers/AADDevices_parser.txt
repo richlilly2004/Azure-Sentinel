@@ -17,4 +17,4 @@
 //
 //
 AADDevices_CL
-| project TimeGenerated, DisplayName=DisplayName_s, DirSyncEnabled = DirSyncEnabled_b, DeviceTrustType=DeviceTrustType_s, ProfileType=ProfileType_s, IsCompliant=IsCompliant_b, IsManaged=IsManaged_b, Enabled=AccountEnabled_b, DeviceOSType = DeviceOSType_s, OSVersion=DeviceOSVersion_s, ProfileTyep = ProfileType_s, ObjectId=ObjectId_g, DeviceID=DeviceId_g, ApproxLastSignIn=ApproximateLastLogonTimeStamp_t
+| project TimeGenerated, DisplayName=DisplayName_s, DirSyncEnabled = DirSyncEnabled_b, DeviceTrustType=DeviceTrustType_s, ProfileType=ProfileType_s, IsCompliant=IsCompliant_b, IsManaged=IsManaged_b, Enabled=AccountEnabled_b, DeviceOSType = DeviceOSType_s, OSVersion=DeviceOSVersion_s, ObjectId=ObjectId_g, DeviceID=DeviceId_g, ApproxLastSignIn=ApproximateLastLogonTimeStamp_t
