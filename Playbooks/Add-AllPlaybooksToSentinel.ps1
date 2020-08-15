@@ -50,7 +50,8 @@ foreach($playbook in $playbooks)
             }
             Default {
                 Write-Host -ForegroundColor Red "Unrecognized parameter: $param"
-                break;
+                $value = Read-Host "Provide value for parameter $param"
+                $templateParamTable.Add($param, $value)
             }
         }
     }
