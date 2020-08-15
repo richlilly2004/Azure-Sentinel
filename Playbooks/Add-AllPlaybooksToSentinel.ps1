@@ -1,4 +1,4 @@
-#Requires -Module Az
+#Requires -Module Az.Resources
 
 $repoDirectory = Read-Host -Prompt "Enter the directory containing all playbooks to deploy"
 $playbooks = Get-ChildItem -LiteralPath $repoDirectory |Where-Object {$_.Name -notlike "*.*"} | Select-Object Name | Out-GridView -Title "Select Playbooks to Deploy" -PassThru
