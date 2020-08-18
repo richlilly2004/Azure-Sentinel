@@ -1,6 +1,6 @@
 <#
 Add-PlaybooksToSentinel.ps1
-Authors: Tom Lilly @tlilly2010, Rich Lilly @richlilly2004 - Netrix LLC (https://www.netrixllc.com)
+Authors: Tom Lilly @tlilly2010 (@TheTomLilly), Rich Lilly @richlilly2004 (@richlilly) - Netrix LLC (https://www.netrixllc.com)
 From https://github.com/Azure/Azure-Sentinel/PLACEHOLDER
 Last Updated Date: August 18, 2020
 
