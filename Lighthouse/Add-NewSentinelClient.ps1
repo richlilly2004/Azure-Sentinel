@@ -75,7 +75,7 @@ foreach($roleId in $contributorRoleIds)
 {
     $authHash = @{}
     $authHash.Add("principalId",$($groupObjContrib.objectId))
-    $authHash.Add("principalDisplayName",$groupNameContrib)
+    $authHash.Add("principalIdDisplayName",$groupNameContrib)
     $authHash.Add("roleDefinitionId",$roleId)
     $fileHashTableAuthArray.Add($authHash) | Out-Null
 }
