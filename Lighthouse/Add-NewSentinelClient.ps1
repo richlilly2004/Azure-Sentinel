@@ -85,7 +85,7 @@ foreach($roleId in $responderRoleIds)
 {
     $authHash = @{}
     $authHash.Add("principalId",$($groupObjResponders.objectId))
-    $authHash.Add("principalDisplayName",$groupNameResponders)
+    $authHash.Add("principalIdDisplayName",$groupNameResponders)
     $authHash.Add("roleDefinitionId",$roleId)
     $fileHashTableAuthArray.Add($authHash) | Out-Null
 }
@@ -95,7 +95,7 @@ foreach($roleId in $readerRoleIds)
 {
     $authHash = @{}
     $authHash.Add("principalId",$($groupObjReaders.objectId))
-    $authHash.Add("principalDisplayName",$groupNameReaders)
+    $authHash.Add("principalIdDisplayName",$groupNameReaders)
     $authHash.Add("roleDefinitionId",$roleId)
     $fileHashTableAuthArray.Add($authHash) | Out-Null
 }
