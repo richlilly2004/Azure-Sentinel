@@ -1,0 +1,311 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata":{
+        "comments": "This playbook will get data from the Meraki Cloud Dashboard API, specifically configurationChanges. You must first create an API key in the portal before you deploy this LogicApp.",
+        "author": "Rich Lilly"
+    },
+    "parameters": {
+        "PlaybookName": {
+            "defaultValue": "Get-MerakiData-configurationChanges",
+            "type": "string",
+            "metadata": {
+                "description": "Name of the playbook to be deployed"
+            }
+        },
+        "UserName": {
+            "defaultValue": "<username>@<domain>",
+            "type": "string"
+        },
+        "Meraki_APIKey": {
+            "type": "string",
+            "metadata": {
+                "description": "API Key to be used to authenticate to Meraki service"
+            }
+        },
+        "Meraki_OrgId": {
+            "type": "string",
+            "metadata": {
+                "description": "API Key to be used to authenticate to Meraki service"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('PlaybookName')]",
+            "location": "eastus2",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 1,
+                                "startTime": "2021-01-19T00:00:00Z"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "HTTP_-_Get_302_URL": {
+                            "runAfter": {
+                                "Initialize_variable_-_Timespan": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "headers": {
+                                    "X-Cisco-Meraki-API-Key": "@variables('API Key')"
+                                },
+                                "method": "GET",
+                                "uri": "https://api.meraki.com/api/v0/organizations/@{variables('OrgId')}/configurationChanges?timespan=@{variables('Timespan')}"
+                            }
+                        },
+                        "HTTP_-_Get_configurationChanges": {
+                            "runAfter": {
+                                "Parse_JSON_-_Parse_302_URL": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "headers": {
+                                    "X-Cisco-Meraki-API-Key": "@variables('API Key')"
+                                },
+                                "method": "GET",
+                                "uri": "@body('Parse_JSON_-_Parse_302_URL')?['Location']"
+                            }
+                        },
+                        "Initialize_variable_-_API_Key": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "API Key",
+                                        "type": "string",
+                                        "value": "[parameters('Meraki_APIKey')]"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_-_OrgId": {
+                            "runAfter": {
+                                "Initialize_variable_-_API_Key": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "OrgId",
+                                        "type": "string",
+                                        "value": "[parameters('Meraki_OrgId')]"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_-_Timespan": {
+                            "runAfter": {
+                                "Initialize_variable_-_OrgId": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Timespan",
+                                        "type": "integer",
+                                        "value": 60
+                                    }
+                                ]
+                            }
+                        },
+                        "Parse_JSON_-_Parse_302_URL": {
+                            "runAfter": {
+                                "HTTP_-_Get_302_URL": [
+                                    "Succeeded",
+                                    "Failed"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@outputs('HTTP_-_Get_302_URL')['headers']",
+                                "schema": {
+                                    "properties": {
+                                        "Cache-Control": {
+                                            "type": "string"
+                                        },
+                                        "Connection": {
+                                            "type": "string"
+                                        },
+                                        "Content-Length": {
+                                            "type": "string"
+                                        },
+                                        "Content-Type": {
+                                            "type": "string"
+                                        },
+                                        "Date": {
+                                            "type": "string"
+                                        },
+                                        "Deprecation": {
+                                            "type": "string"
+                                        },
+                                        "Expires": {
+                                            "type": "string"
+                                        },
+                                        "Link": {
+                                            "type": "string"
+                                        },
+                                        "Location": {
+                                            "type": "string"
+                                        },
+                                        "Pragma": {
+                                            "type": "string"
+                                        },
+                                        "Server": {
+                                            "type": "string"
+                                        },
+                                        "Sunset": {
+                                            "type": "string"
+                                        },
+                                        "Transfer-Encoding": {
+                                            "type": "string"
+                                        },
+                                        "X-Frame-Options": {
+                                            "type": "string"
+                                        },
+                                        "X-Request-Id": {
+                                            "type": "string"
+                                        },
+                                        "X-Robots-Tag": {
+                                            "type": "string"
+                                        },
+                                        "X-Runtime": {
+                                            "type": "string"
+                                        },
+                                        "X-UA-Compatible": {
+                                            "type": "string"
+                                        },
+                                        "X-XSS-Protection": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "Parse_JSON_-_Parse_configurationChanges": {
+                            "runAfter": {
+                                "HTTP_-_Get_configurationChanges": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('HTTP_-_Get_configurationChanges')",
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "adminId": {
+                                                "type": "string"
+                                            },
+                                            "adminName": {
+                                                "type": "string"
+                                            },
+                                            "label": {
+                                                "type": "string"
+                                            },
+                                            "networkId": {
+                                                "type": "string"
+                                            },
+                                            "networkName": {
+                                                "type": "string"
+                                            },
+                                            "newValue": {
+                                                "type": "string"
+                                            },
+                                            "oldValue": {
+                                                "type": "string"
+                                            },
+                                            "page": {
+                                                "type": "string"
+                                            },
+                                            "ssidName": {
+                                                "type": "string"
+                                            },
+                                            "ssidNumber": {
+                                                "type": "integer"
+                                            },
+                                            "ts": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "ts",
+                                            "adminName",
+                                            "page",
+                                            "label",
+                                            "oldValue",
+                                            "newValue"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "Send_Data_-_configurationChanges": {
+                            "runAfter": {
+                                "Parse_JSON_-_Parse_configurationChanges": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "@{body('Parse_JSON_-_Parse_configurationChanges')}",
+                                "headers": {
+                                    "Log-Type": "MerakiConfigurationChanges"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/logs"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureloganalyticsdatacollector": {
+                                "connectionId": "[parameters('connections_azureloganalyticsdatacollector_externalid')]",
+                                "connectionName": "azureloganalyticsdatacollector",
+                                "id": "/subscriptions/f6aef52f-abdb-44d4-a3dd-e25ef9e3d932/providers/Microsoft.Web/locations/eastus2/managedApis/azureloganalyticsdatacollector"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
