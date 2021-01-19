@@ -303,7 +303,7 @@
                             },
                             "type": "ApiConnection",
                             "inputs": {
-                                "body": "@{body('Parse_JSON_-_Parse_CnfigurationChanges')}",
+                                "body": "@{body('Parse_JSON_-_Parse_ConfigurationChanges')}",
                                 "headers": {
                                     "Log-Type": "MerakiConfigurationChanges"
                                 },
