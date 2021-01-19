@@ -294,17 +294,7 @@
                     },
                     "outputs": {}
                 },
-                "parameters": {
-                    "$connections": {
-                        "value": {
-                            "azureloganalyticsdatacollector": {
-                                "connectionId": "[parameters('connections_azureloganalyticsdatacollector_externalid')]",
-                                "connectionName": "azureloganalyticsdatacollector",
-                                "id": "/subscriptions/f6aef52f-abdb-44d4-a3dd-e25ef9e3d932/providers/Microsoft.Web/locations/eastus2/managedApis/azureloganalyticsdatacollector"
-                            }
-                        }
-                    }
-                }
+                "parameters": {}
             }
         }
     ]
