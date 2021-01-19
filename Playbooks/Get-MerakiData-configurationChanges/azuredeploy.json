@@ -2,12 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "metadata":{
-        "comments": "This playbook will get data from the Meraki Cloud Dashboard API, specifically configurationChanges. You must first create an API key in the portal before you deploy this LogicApp.",
+        "comments": "This playbook will get data from the Meraki Cloud Dashboard API, specifically ConfigurationChanges. You must first create an API key in the portal before you deploy this LogicApp.",
         "author": "Rich Lilly"
     },
     "parameters": {
         "PlaybookName": {
-            "defaultValue": "Get-MerakiData-configurationChanges",
+            "defaultValue": "Get-MerakiData-ConfigurationChanges",
             "type": "string",
             "metadata": {
                 "description": "Name of the playbook to be deployed"
@@ -96,10 +96,10 @@
                                     "X-Cisco-Meraki-API-Key": "@variables('API Key')"
                                 },
                                 "method": "GET",
-                                "uri": "https://api.meraki.com/api/v0/organizations/@{variables('OrgId')}/configurationChanges?timespan=@{variables('Timespan')}"
+                                "uri": "https://api.meraki.com/api/v0/organizations/@{variables('OrgId')}/ConfigurationChanges?timespan=@{variables('Timespan')}"
                             }
                         },
-                        "HTTP_-_Get_configurationChanges": {
+                        "HTTP_-_Get_ConfigurationChanges": {
                             "runAfter": {
                                 "Parse_JSON_-_Parse_302_URL": [
                                     "Succeeded"
@@ -235,15 +235,15 @@
                                 }
                             }
                         },
-                        "Parse_JSON_-_Parse_configurationChanges": {
+                        "Parse_JSON_-_Parse_ConfigurationChanges": {
                             "runAfter": {
-                                "HTTP_-_Get_configurationChanges": [
+                                "HTTP_-_Get_ConfigurationChanges": [
                                     "Succeeded"
                                 ]
                             },
                             "type": "ParseJson",
                             "inputs": {
-                                "content": "@body('HTTP_-_Get_configurationChanges')",
+                                "content": "@body('HTTP_-_Get_ConfigurationChanges')",
                                 "schema": {
                                     "items": {
                                         "properties": {
@@ -295,15 +295,15 @@
                                 }
                             }
                         },
-                        "Send_Data_-_configurationChanges": {
+                        "Send_Data_-_ConfigurationChanges": {
                             "runAfter": {
-                                "Parse_JSON_-_Parse_configurationChanges": [
+                                "Parse_JSON_-_Parse_ConfigurationChanges": [
                                     "Succeeded"
                                 ]
                             },
                             "type": "ApiConnection",
                             "inputs": {
-                                "body": "@{body('Parse_JSON_-_Parse_configurationChanges')}",
+                                "body": "@{body('Parse_JSON_-_Parse_CnfigurationChanges')}",
                                 "headers": {
                                     "Log-Type": "MerakiConfigurationChanges"
                                 },
