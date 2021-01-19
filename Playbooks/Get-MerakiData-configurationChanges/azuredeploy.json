@@ -26,7 +26,7 @@
         "Meraki_OrgId": {
             "type": "string",
             "metadata": {
-                "description": "API Key to be used to authenticate to Meraki service"
+                "description": "OrgId to be used"
             }
         }
     },
@@ -40,13 +40,11 @@
             "name": "[variables('AzureLogAnalyticsDataCollectorConnectionName')]",
             "location": "[resourceGroup().location]",
             "properties": {
-                "displayName": "O365Data",
-                "customParameterValues": {
-                },
+                "displayName": "MerakiConfigurationChanges",
+                "customParameterValues": {},
                 "api": {
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azureloganalyticsdatacollector')]"
-                },
-                "parameterValues": {}
+                }
             }
         },
         {
