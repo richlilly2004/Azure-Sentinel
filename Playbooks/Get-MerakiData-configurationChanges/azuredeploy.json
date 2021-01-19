@@ -30,14 +30,12 @@
             }
         }
     },
-    "variables": {
-        "AzureLogAnalyticsDataCollectorConnectionName": "Test123"
-    },
+    "variables": {},
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "apiVersion": "2016-06-01",
-            "name": "[variables('AzureLogAnalyticsDataCollectorConnectionName')]",
+            "name": "Test123",
             "location": "[resourceGroup().location]",
             "properties": {
                 "displayName": "MerakiConfigurationChanges",
@@ -309,17 +307,7 @@
                     },
                     "outputs": {}
                 },
-                "parameters": {
-        "$connections": {
-            "value": {
-                "azureloganalyticsdatacollector": {
-                    "connectionId": "[resourceId('Microsoft.Web/connections', variables('AzureLogAnalyticsDataCollectorConnectionName'))]",
-                    "connectionName": "[variables('AzureLogAnalyticsDataCollectorConnectionName')]",
-                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azureloganalyticsdatacollector')]"
-                }
-            }
-        }
-    }
+                "parameters": {}
             }
         }
     ]
