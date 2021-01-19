@@ -53,7 +53,7 @@
                             "recurrence": {
                                 "frequency": "Minute",
                                 "interval": 1,
-                                "startTime": "2021-01-20T00:00:00Z"
+                                "startTime": "2021-01-01T00:00:00Z"
                             },
                             "type": "Recurrence"
                         }
