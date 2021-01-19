@@ -31,7 +31,7 @@
         }
     },
     "variables": {
-        "AzureLogAnalyticsDataCollectorConnectionName": "[concat('azureloganalyticsdatacollector-', parameters('PlaybookName'))]"
+        "AzureLogAnalyticsDataCollectorConnectionName": "Test123"
     },
     "resources": [
         {
