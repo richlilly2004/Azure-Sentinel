@@ -103,7 +103,7 @@
                                     {
                                         "name": "API Key",
                                         "type": "string",
-                                        "value": "a37b01d05600e9dd0e74eab339f7e6acd0d2ecf6"
+                                        "value": "[parameters('Meraki_APIKey')]"
                                     }
                                 ]
                             },
@@ -116,7 +116,7 @@
                                     {
                                         "name": "OrgId",
                                         "type": "string",
-                                        "value": "741624"
+                                        "value": "[parameters('Meraki_OrgId')]"
                                     }
                                 ]
                             },
