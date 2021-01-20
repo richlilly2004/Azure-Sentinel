@@ -16,5 +16,5 @@
 // REFERENCES: 
 // Using functions in Azure monitor log queries: https://docs.microsoft.com/azure/azure-monitor/log-query/functions
 // 
-MerakiTestIngestion_CL
+MerakiSecurityEvents_CL
 | project Timestamp=TimeGenerated,ts=ts_d,deviceMac=deviceMac_s,clientMac=clientMac_s,srcIp=srcIp_s,destIp=destIp_s,protocol=protocol_s,priority=priority_s,classification=classification_s,blocked=blocked_b,Message,signature=signature_s,sigSource=sigSource_s,ruleId=ruleId_s
