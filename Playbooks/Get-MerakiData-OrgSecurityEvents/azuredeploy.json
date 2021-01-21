@@ -234,7 +234,7 @@
                                 },
                                 "host": {
                                     "connection": {
-                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector_1']['connectionId']"
+                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
                                     }
                                 },
                                 "method": "post",
