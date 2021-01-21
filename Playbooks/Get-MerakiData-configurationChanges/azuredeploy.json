@@ -84,7 +84,7 @@
                         }
                     },
                     "actions": {
-                        "HTTP_-_Get_302_URL": {
+                        "HTTP_-_Get_configurationChanges": {
                             "runAfter": {
                                 "Initialize_variable_-_Timespan": [
                                     "Succeeded"
@@ -97,21 +97,6 @@
                                 },
                                 "method": "GET",
                                 "uri": "https://api.meraki.com/api/v0/organizations/@{variables('OrgId')}/configurationChanges?timespan=@{variables('Timespan')}"
-                            }
-                        },
-                        "HTTP_-_Get_configurationChanges": {
-                            "runAfter": {
-                                "Parse_JSON_-_Parse_302_URL": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "Http",
-                            "inputs": {
-                                "headers": {
-                                    "X-Cisco-Meraki-API-Key": "@variables('API Key')"
-                                },
-                                "method": "GET",
-                                "uri": "@body('Parse_JSON_-_Parse_302_URL')?['Location']"
                             }
                         },
                         "Initialize_variable_-_API_Key": {
@@ -161,84 +146,11 @@
                                 ]
                             }
                         },
-                        "Parse_JSON_-_Parse_302_URL": {
-                            "runAfter": {
-                                "HTTP_-_Get_302_URL": [
-                                    "Succeeded",
-                                    "Failed"
-                                ]
-                            },
-                            "type": "ParseJson",
-                            "inputs": {
-                                "content": "@outputs('HTTP_-_Get_302_URL')['headers']",
-                                "schema": {
-                                    "properties": {
-                                        "Cache-Control": {
-                                            "type": "string"
-                                        },
-                                        "Connection": {
-                                            "type": "string"
-                                        },
-                                        "Content-Length": {
-                                            "type": "string"
-                                        },
-                                        "Content-Type": {
-                                            "type": "string"
-                                        },
-                                        "Date": {
-                                            "type": "string"
-                                        },
-                                        "Deprecation": {
-                                            "type": "string"
-                                        },
-                                        "Expires": {
-                                            "type": "string"
-                                        },
-                                        "Link": {
-                                            "type": "string"
-                                        },
-                                        "Location": {
-                                            "type": "string"
-                                        },
-                                        "Pragma": {
-                                            "type": "string"
-                                        },
-                                        "Server": {
-                                            "type": "string"
-                                        },
-                                        "Sunset": {
-                                            "type": "string"
-                                        },
-                                        "Transfer-Encoding": {
-                                            "type": "string"
-                                        },
-                                        "X-Frame-Options": {
-                                            "type": "string"
-                                        },
-                                        "X-Request-Id": {
-                                            "type": "string"
-                                        },
-                                        "X-Robots-Tag": {
-                                            "type": "string"
-                                        },
-                                        "X-Runtime": {
-                                            "type": "string"
-                                        },
-                                        "X-UA-Compatible": {
-                                            "type": "string"
-                                        },
-                                        "X-XSS-Protection": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        },
                         "Parse_JSON_-_Parse_configurationChanges": {
                             "runAfter": {
                                 "HTTP_-_Get_configurationChanges": [
-                                    "Succeeded"
+                                    "Succeeded",
+                                    "Failed"
                                 ]
                             },
                             "type": "ParseJson",
@@ -309,7 +221,7 @@
                                 },
                                 "host": {
                                     "connection": {
-                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector_1']['connectionId']"
                                     }
                                 },
                                 "method": "post",
