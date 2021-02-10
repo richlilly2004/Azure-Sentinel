@@ -1,0 +1,1023 @@
+{
+	"info": {
+		"_postman_id": "35abbd36-1d77-41b4-92ba-2e70d59a98e8",
+		"name": "Azure Sentinel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alert Rule Templates",
+			"item": [
+				{
+					"name": "Get All alert rule templates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/alertRuleTemplates?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"alertRuleTemplates"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an alert rule template",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/alertRuleTemplates/4696e072-aca8-4a4f-bf05-89fddc5ac3c9?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"alertRuleTemplates",
+								"4696e072-aca8-4a4f-bf05-89fddc5ac3c9"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Alert Rules",
+			"item": [
+				{
+					"name": "Get All alert rules",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/alertRules?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"alertRules"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an alert rule",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/alertRules/a22dc624-14c5-4230-931c-cfa692c28506?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"alertRules",
+								"a22dc624-14c5-4230-931c-cfa692c28506"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookmarks",
+			"item": [
+				{
+					"name": "Get All bookmarks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/bookmarks?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"bookmarks"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a bookmark",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/bookmarks/xxxxxxx?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"bookmarks",
+								"xxxxxxx"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cases",
+			"item": [
+				{
+					"name": "Get all cases",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/cases?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"cases"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a case",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/cases/7389bbf6-1695-4aec-8eb6-da85e4af587f?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"cases",
+								"7389bbf6-1695-4aec-8eb6-da85e4af587f"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Data Connectors",
+			"item": [
+				{
+					"name": "Get all data connectors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/dataConnectors?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"dataConnectors"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a data connector",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/dataConnectors/c9eb0011-b17f-4d66-9176-67227ac3423c?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"dataConnectors",
+								"c9eb0011-b17f-4d66-9176-67227ac3423c"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incidents",
+			"item": [
+				{
+					"name": "Get All incidents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/incidents?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"incidents"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an incident",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/incidents/7389bbf6-1695-4aec-8eb6-da85e4af587f?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"incidents",
+								"7389bbf6-1695-4aec-8eb6-da85e4af587f"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Office Consents",
+			"item": [
+				{
+					"name": "Get all office consents",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/officeconsents?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"officeconsents"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an office consent",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/officeconsents/257656a5-3038-45db-8db1-5ceea8e27f42?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"officeconsents",
+								"257656a5-3038-45db-8db1-5ceea8e27f42"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Get all settings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/settings?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"settings"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a setting",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/settings/EntityAnalytics?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"settings",
+								"EntityAnalytics"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Watchlists (Preview)",
+			"item": [
+				{
+					"name": "Get All watchlists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/Watchlists?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"Watchlists"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a watchlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/Watchlists/MSCloudIPs?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"Watchlists",
+								"MSCloudIPs"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put a watchlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SentinelappOnlyAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "ContentType",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{SentinelSubscriptionId}}/resourceGroups/{{SentinelRG}}/providers/Microsoft.OperationalInsights/workspaces/{{SentinelWorkspace}}/providers/Microsoft.SecurityInsights/Watchlists/MSCloudIPs?api-version=2019-01-01-preview",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{SentinelSubscriptionId}}",
+								"resourceGroups",
+								"{{SentinelRG}}",
+								"providers",
+								"Microsoft.OperationalInsights",
+								"workspaces",
+								"{{SentinelWorkspace}}",
+								"providers",
+								"Microsoft.SecurityInsights",
+								"Watchlists",
+								"MSCloudIPs"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2019-01-01-preview"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bearer token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.environment.set(\"SentinelappOnlyAccessToken\", response.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "{{grant_type}}",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{Sentinel_client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{Sentinel_client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "{{Sentinel_resource}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{tenantId}}/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{tenantId}}",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
