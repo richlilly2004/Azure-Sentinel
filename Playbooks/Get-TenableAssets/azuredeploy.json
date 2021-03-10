@@ -86,7 +86,7 @@
                                     "inputs": {
                                         "body": "@{items('For_each')}",
                                         "headers": {
-                                            "Log-Type": "Tenable_Assets_Details",
+                                            "Log-Type": "[parameters('LogADisplayName')]",
                                             "time-generated-field": "@{utcNow()}"
                                         },
                                         "host": {
