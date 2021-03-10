@@ -89,7 +89,7 @@
                                             "inputs": {
                                                 "body": "{\n\"VulnID\":\"@{items('For_each_2')?['plugin_id']}\",\n\"AssetID\":\"@{items('For_each')?['id']}\",\n\"VulnName\":\"@{items('For_each_2')?['plugin_name']}\",\n \"plugin_family\":\"@{items('For_each_2')?['plugin_family']}\",\n\"severity\":\"@{items('For_each_2')?['severity']}\",\n\"IP\":\"@{items('For_each')?['ipv4']?[0]}\",\n\"fqdn\":\"@{items('For_each')?['fqdn']?[0]}\",\n\"State\": \"@{items('For_each_2')['vulnerability_state']}\"\n}",
                                                 "headers": {
-                                                    "Log-Type": "Vulns_AssetID_List",
+                                                    "Log-Type": "[parameters('LogADisplayName')]",
                                                     "time-generated-field": "@{utcNow()}"
                                                 },
                                                 "host": {
