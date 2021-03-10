@@ -2,12 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "metadata":{
-        "comments": "This playbook will get asset data from the Tenable.io Cloud API. You must first create and retrieve an API key in the Tenabl.io portal before you deploy this LogicApp. It must be in the format 'accessKey=xxxxxx;secretKey=xxxxxx'",
+        "comments": "This playbook will get vulnerability data from the Tenable.io Cloud API. You must first create and retrieve an API key in the Tenable.io portal before you deploy this LogicApp. It must be in the format 'accessKey=xxxxxx;secretKey=xxxxxx'",
         "author": "Rich Lilly"
     },
     "parameters": {
         "PlaybookName": {
-            "defaultValue": "Get-TenableAssets",
+            "defaultValue": "Get-TenableVulns",
             "type": "string",
             "metadata": {
                 "description": "Name of the playbook to be deployed"
@@ -24,7 +24,7 @@
             }
         },
         "LogADisplayName": {
-            "defaultValue": "Tenable_AssetID_List",
+            "defaultValue": "Tenable_Vulns_List",
             "type": "string"
         }
     },
