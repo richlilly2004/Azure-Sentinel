@@ -24,7 +24,7 @@
             }
         },
         "LogADisplayName": {
-            "defaultValue": "Tenable_AssetID_List",
+            "defaultValue": "Tenable_Assets_List_CL",
             "type": "string"
         }
     },
