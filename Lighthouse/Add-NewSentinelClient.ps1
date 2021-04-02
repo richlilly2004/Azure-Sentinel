@@ -15,7 +15,7 @@ param (
     $clientName,
 
     [string]
-    $rgName = "REPLACE ME WITH SENTINEL RG NAME"
+    $rgName = "use-ala-rg"
 )
 
 function Save-File([string] $initialDirectory, [string] $initialFileName) 
@@ -58,10 +58,17 @@ $fileName = "Netrix Prod B2B - Azure Sentinel MSSP-$clientName.json"
 $fileDir = "C:\"
 
 Connect-AzureAD -TenantId $aadTenantId
-
+#Create Groups
 $groupObjContrib = New-AzureADGroup -DisplayName $groupNameContrib -MailEnabled $false -SecurityEnabled $true -MailNickName ($groupNameContrib.Replace(" ",""))
 $groupObjResponders = New-AzureADGroup -DisplayName $groupNameResponders -MailEnabled $false -SecurityEnabled $true -MailNickName ($groupNameResponders.Replace(" ",""))
 $groupObjReaders = New-AzureADGroup -DisplayName $groupNameReaders -MailEnabled $false -SecurityEnabled $true -MailNickName ($groupNameReaders.Replace(" ",""))
+#Add Ivan/Rich to Group as Owners
+Add-AzureADGroupOwner -RefObjectId 03975c98-d4ba-406d-af26-7222441983a6 -ObjectId $groupObjContrib.ObjectId
+Add-AzureADGroupOwner -RefObjectId 641e789b-a1e0-4dd5-a80a-e9caec927cca -ObjectId $groupObjContrib.ObjectId
+Add-AzureADGroupOwner -RefObjectId 03975c98-d4ba-406d-af26-7222441983a6 -ObjectId $groupObjResponders.ObjectId
+Add-AzureADGroupOwner -RefObjectId 641e789b-a1e0-4dd5-a80a-e9caec927cca -ObjectId $groupObjResponders.ObjectId
+Add-AzureADGroupOwner -RefObjectId 03975c98-d4ba-406d-af26-7222441983a6 -ObjectId $groupObjReaders.ObjectId
+Add-AzureADGroupOwner -RefObjectId 641e789b-a1e0-4dd5-a80a-e9caec927cca -ObjectId $groupObjReaders.ObjectId
 
 $fileHashTableParamOfferName = @{"value"="Netrix Managed Services - Azure SentinelaaS"}
 $fileHashTableParamOfferDescription = @{"value"="Netrix Managed Services - Azure SentinelaaS"}
