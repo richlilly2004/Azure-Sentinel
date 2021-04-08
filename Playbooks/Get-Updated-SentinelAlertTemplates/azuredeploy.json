@@ -1,0 +1,342 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata":{
+        "comments": "This playbook will use a Managed Identity with the Azure Sentinel Reader role (Add under the RG IAM settings the name of the playbook) to retrieve all AlertTemplates from the API once a day, look for changes to existing, and post the details to Teams. You can additional notification methods such as e-mail, social, etc after.",
+        "author": "Rich Lilly"
+    },
+    "parameters": {
+        "PlaybookName": {
+            "defaultValue": "Get-Updated-SentinelAlertTemplates",
+            "type": "string",
+            "metadata": {
+                "description": "Name of the playbook to be deployed"
+            }
+        },
+        "UserName": {
+            "defaultValue": "<username>@<domain>",
+            "type": "string"
+        },
+        "SentinelSubscriptionId": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Sentinel Subscription ID"
+            }
+        },
+        "SentinelRG": {
+           "type": "string",
+            "metadata": {
+                "description": "Azure Sentinel Resource Group"
+            }
+        },
+        "SentinelWorkspace": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Sentinel Workspace Name"
+            }
+        }
+    },
+    "variables": {
+        "TeamsConnectionName": "[concat('teams-', parameters('PlaybookName'))]"
+    },
+    "resources": [
+        {
+        "type": "Microsoft.Web/connections",
+        "apiVersion": "2016-06-01",
+        "name": "[variables('TeamsConnectionName')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "displayName": "[parameters('UserName')]",
+          "customParameterValues": {
+          },
+          "api": {
+            "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/teams')]"
+          }
+        }
+      },
+      {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('PlaybookName')]",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "principalId": "",
+                "tenantId": "",
+                "type": "SystemAssigned"
+                        },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', variables('TeamsConnectionName'))]"
+            ],
+            "tags": {
+                "LogicAppsCategory": "security"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1,
+                                "startTime": "2020-04-01T00:00:00Z",
+                                "timeZone": "Central Standard Time"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Filter_array_-_Last_Day": {
+                            "runAfter": {
+                                "Parse_JSON": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Query",
+                            "inputs": {
+                                "from": "@body('Parse_JSON')?['value']",
+                                "where": "@greater(item()?['properties']?['lastUpdatedDateUTC'], addDays(utcNow(), -1))"
+                            }
+                        },
+                        "Filter_array_-_Not_Created_today": {
+                            "runAfter": {
+                                "Filter_array_-_Last_Day": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Query",
+                            "inputs": {
+                                "from": "@body('Filter_array_-_Last_Day')",
+                                "where": "@not(equals(item()?['properties']?['lastUpdatedDateUTC'], item()?['properties']?['createdDateUTC']))"
+                            }
+                        },
+                        "For_each": {
+                            "foreach": "@body('Filter_array_-_Not_Created_today')",
+                            "actions": {
+                                "Post_a_message_(V3)": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "body": {
+                                                "content": "<p>An updated Sentinel rule has been published by Microsoft and should be reviewed and published to clients where applicable.<br>\n<br>\nName: @{items('For_each')?['properties']?['displayName']}<br>\nDescription: @{items('For_each')?['properties']?['description']}<br>\nSeverity: @{items('For_each')?['properties']?['severity']}<br>\nConnector: @{items('For_each')?['properties']?['requiredDataConnectors']}<br>\nTactics: @{items('For_each')?['properties']?['tactics']}</p>",
+                                                "contentType": "html"
+                                            },
+                                            "subject": "Updated Sentinel Alert Template Available: @{items('For_each')?['properties']?['displayName']}"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['teams']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v3/beta/teams/@{encodeURIComponent('c0a697c3-afe2-4a6b-bc77-6c7dda6fff27')}/channels/@{encodeURIComponent('19:1ed329fd23ec4d3ba7c9208ef8c88e93@thread.skype')}/messages"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Filter_array_-_Not_Created_today": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "HTTP": {
+                            "runAfter": {
+                                "Initialize_SentinelWorkspace": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "authentication": {
+                                    "audience": "https://management.azure.com",
+                                    "type": "ManagedServiceIdentity"
+                                },
+                                "method": "GET",
+                                "uri": "https://management.azure.com/subscriptions/@{variables('SentinelSubscriptionId')}/resourceGroups/@{variables('SentinelRG')}/providers/Microsoft.OperationalInsights/workspaces/@{variables('SentinelWorkspace')}/providers/Microsoft.SecurityInsights/alertRuleTemplates?api-version=2019-01-01-preview"
+                            }
+                        },
+                        "Initialize_SentinelRG": {
+                            "runAfter": {
+                                "Initialize_SentinelSubscriptionId": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "SentinelRG",
+                                        "type": "string",
+                                        "value": "[parameters('SentinelRG')]"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_SentinelSubscriptionId": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "SentinelSubscriptionId",
+                                        "type": "string",
+                                        "value": "[parameters('SentinelSubscriptionId')]"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_SentinelWorkspace": {
+                            "runAfter": {
+                                "Initialize_SentinelRG": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "SentinelWorkspace",
+                                        "type": "string",
+                                        "value": "[parameters('SentinelWorkspace')]"
+                                    }
+                                ]
+                            }
+                        },
+                        "Parse_JSON": {
+                            "runAfter": {
+                                "HTTP": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('HTTP')",
+                                "schema": {
+                                    "properties": {
+                                        "value": {
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "kind": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "properties": {
+                                                        "properties": {
+                                                            "alertRulesCreatedByTemplateCount": {
+                                                                "type": "integer"
+                                                            },
+                                                            "createdDateUTC": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "displayName": {
+                                                                "type": "string"
+                                                            },
+                                                            "lastUpdatedDateUTC": {
+                                                                "type": "string"
+                                                            },
+                                                            "query": {
+                                                                "type": "string"
+                                                            },
+                                                            "queryFrequency": {
+                                                                "type": "string"
+                                                            },
+                                                            "queryPeriod": {
+                                                                "type": "string"
+                                                            },
+                                                            "requiredDataConnectors": {
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "connectorId": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "dataTypes": {
+                                                                            "items": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "type": "array"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "connectorId",
+                                                                        "dataTypes"
+                                                                    ],
+                                                                    "type": "object"
+                                                                },
+                                                                "type": "array"
+                                                            },
+                                                            "severity": {
+                                                                "type": "string"
+                                                            },
+                                                            "status": {
+                                                                "type": "string"
+                                                            },
+                                                            "tactics": {
+                                                                "items": {
+                                                                    "type": "string"
+                                                                },
+                                                                "type": "array"
+                                                            },
+                                                            "triggerOperator": {
+                                                                "type": "string"
+                                                            },
+                                                            "triggerThreshold": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "name",
+                                                    "type",
+                                                    "kind",
+                                                    "properties"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "teams": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', variables('TeamsConnectionName'))]",
+                                "connectionName": "[variables('TeamsConnectionName')]",
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/teams')]"
+                }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
