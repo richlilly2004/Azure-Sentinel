@@ -28,11 +28,19 @@
         },
         "rgName": {
             "type": "string"
-        }              
+        }   ,
+        "workspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Sentinel Workspace"
+            }
+        }           
     },
     "variables": {
         "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
-        "mspAssignmentName": "[guid(parameters('rgName'))]"
+        "mspAssignmentName": "[guid(parameters('rgName'))]",
+        "LogicAppLogAnalyticsPolicyId":"/providers/Microsoft.Authorization/policyDefinitions/b889a06c-ec72-4b03-910a-cb169ee18721"
+
     },
     "resources": [
         {
@@ -71,6 +79,36 @@
                         }
                     ]
                 }
+            }
+        },
+        {
+            "name":"LogicAppPolicyAssignment",
+            "type":"Microsoft.Authorization/policyAssignments",
+            "apiVersion":"2020-03-01",
+            "location":"[resourceGroup().location]",
+            "properties": {
+                "policyDefinitionId":"[variables('LogicAppLogAnalyticsPolicyId')]",
+                "scope": "[resourceGroup().id]",
+                "parameters": {
+                    "effect":{
+                        "value":"DeployIfNotExists"
+                    },
+                    "profileName":{
+                        "value":"LogAnalyticsMonitoring"
+                    },
+                    "logAnalytics": {
+                        "value":"[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspaceName'))]"
+                    },
+                    "metricsEnabled":{
+                        "value":"False"
+                    },
+                    "logsEnabled":{
+                        "value":"True"
+                    }
+                }
+            },
+            "identity": {
+                "type":"SystemAssigned"
             }
         }
     ],
