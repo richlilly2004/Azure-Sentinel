@@ -21,8 +21,7 @@
                 "signedResourceTypes": "o"
             },
             "type": "Object"
-        },
-        "LogicAppLogAnalyticsPolicyId":"/providers/Microsoft.Authorization/policyDefinitions/b889a06c-ec72-4b03-910a-cb169ee18721"
+        }
     },
     "resources": [
         {
@@ -249,35 +248,6 @@
                 "query": "[concat('externaldata(host:string, event_type:string, process_path:string, registry_key_path:string, registry_key_details:string, reason:string) [h\"https://',parameters('storageAccounts_name'),'.blob.core.windows.net/', parameters('workspace_name') ,'-store/registry_whitelist.csv?', listAccountSas(parameters('storageAccounts_name'), '2018-07-01', variables('accountSasProperties')).accountSasToken,'\"] with (ignoreFirstRecord=true)\n')]",
                 "functionAlias": "registry_whitelist",
                 "version": 2
-            }
-        },
-        {
-            "name":"LogicAppPolicyAssignment",
-            "type":"Microsoft.Authorization/policyAssignments",
-            "apiVersion":"2020-03-01",
-            "location":"[resourceGroup().location]",
-            "properties": {
-                "policyDefinitionId":"[variables('LogicAppLogAnalyticsPolicyId')]",
-                "parameters": {
-                    "effect":{
-                        "value":"DeployIfNotExists"
-                    },
-                    "profileName":{
-                        "value":"LogAnalyticsMonitoring"
-                    },
-                    "logAnalytics": {
-                        "value":"[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspace_name'))]"
-                    },
-                    "metricsEnabled":{
-                        "value":"False"
-                    },
-                    "logsEnabled":{
-                        "value":"True"
-                    }
-                }
-            },
-            "identity": {
-                "type":"SystemAssigned"
             }
         }
     ]
