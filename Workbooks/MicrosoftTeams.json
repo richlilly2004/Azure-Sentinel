@@ -5,9 +5,58 @@
       "type": 9,
       "content": {
         "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
         "parameters": [
           {
-            "id": "fd258da3-1556-41fc-b428-17122a3c8662",
+            "id": "30bab23f-b1bc-440f-8450-7e4d4da00db5",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "value": [
+              "/subscriptions/0586f888-f970-4477-a596-735276317761"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "includeAll": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "ace00583-fe56-42b9-a6c7-8f10adcf8d8e",
+            "version": "KqlParameterItem/1.0",
+            "name": "Workspace",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'microsoft.operationalinsights/workspaces'\r\n| project id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "value": [
+              ""
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "94f83228-7a63-4766-b0e1-e90c0b7bda19",
             "version": "KqlParameterItem/1.0",
             "name": "TimeRange",
             "type": 4,
@@ -62,23 +111,61 @@
                 {
                   "durationMs": 7776000000
                 }
-              ],
-              "allowCustom": true
+              ]
+            },
+            "timeContext": {
+              "durationMs": 86400000
             }
           }
         ],
         "style": "pills",
-        "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
       },
-      "name": "parameters - 1"
+      "name": "parameters - 25"
     },
     {
-      "type": 1,
+      "type": 11,
       "content": {
-        "json": "## Overview "
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "f9935f78-ba98-4cae-b3ea-65769e9da33e",
+            "cellValue": "Tab",
+            "linkTarget": "parameter",
+            "linkLabel": "Overview",
+            "subTarget": "Overview",
+            "preText": "Overview",
+            "style": "link"
+          },
+          {
+            "id": "ee9c3263-1d1d-4a0a-bbd3-5fa671eeb9f7",
+            "cellValue": "Tab",
+            "linkTarget": "parameter",
+            "linkLabel": "Admin Activity",
+            "subTarget": "AdminActivity",
+            "style": "link"
+          },
+          {
+            "id": "bf60b138-ca2d-4ed9-ba2c-d394fe95feaa",
+            "cellValue": "Tab",
+            "linkTarget": "parameter",
+            "linkLabel": "External Users",
+            "subTarget": "ExternalUsers",
+            "style": "link"
+          },
+          {
+            "id": "827f294d-60b6-4a4e-b001-9934791a3303",
+            "cellValue": "Tab",
+            "linkTarget": "parameter",
+            "linkLabel": "Suspicious Activity",
+            "subTarget": "SuspiciousActivity",
+            "style": "link"
+          }
+        ]
       },
-      "name": "text - 2"
+      "name": "links - 24"
     },
     {
       "type": 3,
@@ -88,12 +175,20 @@
         "size": 0,
         "title": "Activities - 30 Day Trend",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "areachart"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "70",
       "name": "query - 0"
@@ -106,12 +201,20 @@
         "size": 0,
         "title": "User type activities",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "piechart"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "30",
       "name": "query - 3"
@@ -124,11 +227,19 @@
         "size": 0,
         "title": "Operations, by User",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "25",
       "name": "query - 16"
@@ -141,12 +252,20 @@
         "size": 1,
         "title": "Channel Types Created",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "piechart"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "25",
       "name": "query - 17"
@@ -159,12 +278,20 @@
         "size": 1,
         "title": "Teams Created",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "25",
       "name": "query - 17 - Copy"
@@ -177,12 +304,20 @@
         "size": 1,
         "title": "Teams Deleted",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
       },
       "customWidth": "25",
       "name": "query - 17 - Copy - Copy"
@@ -195,12 +330,20 @@
         "size": 0,
         "title": "Admin Activities",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "piechart"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "AdminActivity"
       },
       "customWidth": "30",
       "name": "query - 17"
@@ -213,36 +356,45 @@
         "size": 0,
         "title": "Admin Activities",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "AdminActivity"
       },
       "customWidth": "70",
       "name": "query - 16"
     },
     {
-      "type": 1,
-      "content": {
-        "json": "---\r\n## External Users"
-      },
-      "name": "text - 5"
-    },
-    {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberAdded\"\r\n| where Members !contains \"EmailSuffix.com\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
+        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberAdded\"\r\n| where Members !contains \"contoso.com\" and Members !contains \"contoso1.com\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
         "size": 4,
         "title": "External Users Added to Team",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "ExternalUsers"
       },
       "name": "query - 20"
     },
@@ -250,16 +402,24 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberRemoved\"\r\n| where Members !contains \"EmailSuffix.com\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
+        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where CommunicationType == \"Team\"\r\n| where Operation == \"MemberRemoved\"\r\n| where Members !contains \"contoso.com\" and Members !contains \"contoso1.comm\"\r\n| extend DisplayName_ = tostring(parse_json(Members)[0].DisplayName) \r\n| extend UPN_ = tostring(parse_json(Members)[0].UPN)\r\n| project TimeGenerated, Operation, UserId, TeamName, DisplayName_, UPN_\r\n| sort by TimeGenerated desc ",
         "size": 4,
         "title": "External Users Removed from Team",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "ExternalUsers"
       },
       "name": "query - 20 - Copy"
     },
@@ -267,16 +427,24 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where UserId !contains \"EmailSuffix.com\"\r\n| project TimeGenerated, Operation, UserId\r\n| sort by TimeGenerated desc",
+        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where UserId !contains \"contoso.com\" and  UserId !contains \"contoso1.com\" and  UserId !contains \"contoso2.com\" and  UserId !contains \"contoso3.com\"\r\n| project TimeGenerated, Operation, UserId\r\n| sort by TimeGenerated desc",
         "size": 0,
         "title": "External User Activity",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "ExternalUsers"
       },
       "name": "query - 20 - Copy - Copy"
     },
@@ -284,25 +452,26 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where UserId !contains \"EmailSuffix.com\"\r\n| summarize count() by Operation, bin(TimeGenerated, 1d)",
+        "query": "OfficeActivity\r\n| where OfficeWorkload == \"MicrosoftTeams\"\r\n| where UserId !contains \"contoso.com\" and  UserId !contains \"contoso1.com\" and  UserId !contains \"contoso2.com\" and  UserId !contains \"contoso3.com\"\r\n| summarize count() by Operation, bin(TimeGenerated, 1d)",
         "size": 0,
         "title": "External Activity, by Day",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "timechart"
       },
-      "name": "query - 8"
-    },
-    {
-      "type": 1,
-      "content": {
-        "json": "---\r\n## Suspicious Activity"
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "ExternalUsers"
       },
-      "name": "text - 5 - Copy"
+      "name": "query - 8"
     },
     {
       "type": 3,
@@ -312,12 +481,20 @@
         "size": 4,
         "title": "External users added then removed",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
       },
       "name": "query - 16 - Copy"
     },
@@ -329,12 +506,20 @@
         "size": 4,
         "title": "External users from anomalous organizations",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
       },
       "name": "query - 16"
     },
@@ -346,12 +531,20 @@
         "size": 4,
         "title": "Multiple Teams deleted by a single user",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
       },
       "name": "query - 16 - Copy"
     },
@@ -363,12 +556,20 @@
         "size": 4,
         "title": "Successful logon from IP and failure from a different IP (Teams Signins)",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
       },
       "name": "query - 16 - Copy - Copy"
     },
@@ -380,18 +581,101 @@
         "size": 4,
         "title": "User made Owner of multiple Teams",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
         "visualization": "table"
       },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
+      },
       "name": "query - 16 - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let suspiciousFilenames = dynamic(['password', 'admin', 'confidential_term']);\r\nOfficeActivity \r\n| where RecordType =~ \"SharePointFileOperation\" \r\n| where UserId !~ \"app@sharepoint\"\r\n| where SourceRelativeUrl has \"Microsoft Teams Chat Files\" \r\n| where Operation =~ \"FileUploaded\" \r\n| project TimeGenerated, UserId, ClientIP, Site_Url, OfficeObjectId, SourceFileName, SourceFileExtension\r\n| where SourceFileName has_any(suspiciousFilenames)",
+        "size": 4,
+        "title": "Sharing - Suspiciously Named Files",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
+      },
+      "name": "query - 16 - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let suspiciousExtensions = dynamic(['exe', 'msi', 'bin', 'dll']);\r\nOfficeActivity \r\n| where RecordType =~ \"SharePointFileOperation\" \r\n| where UserId !~ \"app@sharepoint\"\r\n| where SourceRelativeUrl has \"Microsoft Teams Chat Files\" \r\n| where Operation =~ \"FileUploaded\" \r\n| project TimeGenerated, UserId, ClientIP, Site_Url, OfficeObjectId, SourceFileName, SourceFileExtension\r\n| where SourceFileExtension has_any(suspiciousExtensions)",
+        "size": 4,
+        "title": "Sharing - Suspicious FIle Extensions",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
+      },
+      "name": "query - 16 - Copy - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "//The bigger the window the better the data sample size, as we use IP prevalence, more sample data is better.\r\n  let timeRange = 30d;\r\n  //The minimum number of countries that the account has been accessed from [default: 2]\r\n  let minimumCountries = 2;\r\n  //The delta (%) between the largest in-use IP and the smallest [default: 90]\r\n  let deltaThreshold = 95;\r\n  //The maximum (%) threshold that the country appears in login data [default: 10]\r\n  let countryPrevalenceThreshold = 10;\r\n  //The time to project forward after the last login activity [default: 60min]\r\n  let projectedEndTime = 60min; \r\n  //Get Teams successful signins globally\r\n  let signinData =\r\n    SigninLogs\r\n    | where TimeGenerated >= ago(timeRange)\r\n    | where AppDisplayName has \"Teams\"\r\n    | where ConditionalAccessStatus =~ \"success\"\r\n    | extend country = tostring(LocationDetails['countryOrRegion'])\r\n    | where isnotempty(country) and isnotempty(IPAddress);\r\n  // Collect successful signins to teams\r\n  let loginEvents = \r\n    signinData\r\n    | summarize count(), country=any(country), make_list(TimeGenerated) by IPAddress, UserPrincipalName;\r\n  //Calcualte delta between logins\r\n  let loginDelta =\r\n    loginEvents\r\n    | summarize max(count_), min(count_) by UserPrincipalName\r\n    | extend delta = toreal(max_count_ - min_count_) / max_count_ * 100\r\n    | where delta >= deltaThreshold;\r\n  //Count number of countries used to sign in\r\n  let countryCount =\r\n    loginEvents\r\n    | summarize Countries = dcount(country) by UserPrincipalName;\r\n  //Join delta and sign in counts to successful logins\r\n  loginDelta\r\n  | join kind=rightouter  (\r\n    loginEvents\r\n  ) on UserPrincipalName\r\n  | join kind=rightouter (\r\n    countryCount\r\n  ) on UserPrincipalName\r\n  //Check where the record meets the minimum required countries\r\n  | where Countries >= minimumCountries\r\n  | join kind=leftouter (\r\n        signinData\r\n        | summarize count() by country\r\n        | join (\r\n            //Now get the total number of logins from any country and join it to the previous count in a single table\r\n            signinData\r\n            | summarize count() by country\r\n            | summarize sum(count_), make_list(country)\r\n            | mv-expand list_country\r\n            | extend country = tostring(list_country)\r\n        ) on country\r\n        | summarize by country, count_, sum_count_\r\n        //Now calculate each countries prevalence within login events\r\n        | extend prevalence = toreal(count_) / toreal(sum_count_) * 100\r\n        | project-away sum_count_\r\n        | order by prevalence\r\n  ) on country\r\n  //The % that suspicious country is prevalent in data, this can be configured, less than 10% is uncommon\r\n  | where prevalence < countryPrevalenceThreshold\r\n  | where min_count_ == count_\r\n  //Login start and end times from the JSON object, this is the activity window the suspicious IP was active within\r\n  | extend EventTimes = list_TimeGenerated\r\n  | extend SuspiciousIP = IPAddress\r\n  | project UserPrincipalName, SuspiciousIP, UserIPDelta = delta, SuspiciousLoginCountry = country, SuspiciousCountryPrevalence = prevalence, EventTimes\r\n  //Teams join to collect operations the user account has performed within the given time range\r\n  | join kind=inner( \r\n    TeamsData \r\n    | where TimeGenerated >= ago(timeRange)\r\n    | where Operation in~ (\"TeamsAdminAction\", \"MemberAdded\", \"MemberRemoved\", \"MemberRoleChanged\", \"AppInstalled\", \"BotAddedToTeam\")\r\n    | project Operation, UserId=tolower(UserId), OperationTime=TimeGenerated\r\n  ) on $left.UserPrincipalName == $right.UserId\r\n  | mv-expand StartTime = EventTimes\r\n  | extend StartTime = make_datetime(StartTime)\r\n  //The end time is projected 60 minutes forward, in case actions took place within the last hour of the final login for the suspicious IP\r\n  | extend ProjectedEndTime = make_datetime(StartTime + projectedEndTime)\r\n  //Limit to operations carried out by the user account in the timeframe the IP was active\r\n  | where OperationTime between (StartTime .. ProjectedEndTime)\r\n  | project UserPrincipalName, SuspiciousIP, StartTime, ProjectedEndTime, OperationTime, Operation, SuspiciousLoginCountry, SuspiciousCountryPrevalence\r\n  //Filter on suspicious actions\r\n  | extend activitySummary = pack(tostring(StartTime), pack(\"Operation\",tostring(Operation), \"OperationTime\", OperationTime))\r\n  | summarize make_bag(activitySummary) by UserPrincipalName, SuspiciousIP, SuspiciousLoginCountry, SuspiciousCountryPrevalence\r\n  | extend IPCustomEntity = SuspiciousIP, AccountCustomEntity = UserPrincipalName",
+        "size": 4,
+        "title": "Anomalous login followed by Teams action",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "table"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "SuspiciousActivity"
+      },
+      "name": "query - 16 - Copy - Copy - Copy - Copy - Copy - Copy"
     }
   ],
   "fallbackResourceIds": [
-    "/subscriptions/0586f888-f970-4477-a596-735276317761/resourcegroups/use-ala-rg/providers/microsoft.operationalinsights/workspaces/netrix"
+    ""
   ],
   "fromTemplateId": "sentinel-ExchangeOnline",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
