@@ -28,7 +28,7 @@
         },
         "rgName": {
             "type": "string"
-        }   ,
+        },
         "workspaceName": {
             "type": "string",
             "metadata": {
@@ -38,9 +38,7 @@
     },
     "variables": {
         "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
-        "mspAssignmentName": "[guid(parameters('rgName'))]",
-        "LogicAppLogAnalyticsPolicyId":"/providers/Microsoft.Authorization/policyDefinitions/b889a06c-ec72-4b03-910a-cb169ee18721"
-
+        "mspAssignmentName": "[guid(parameters('rgName'))]"
     },
     "resources": [
         {
@@ -82,33 +80,70 @@
             }
         },
         {
-            "name":"LogicAppPolicyAssignment",
-            "type":"Microsoft.Authorization/policyAssignments",
-            "apiVersion":"2020-03-01",
-            "location":"[resourceGroup().location]",
-            "properties": {
-                "policyDefinitionId":"[variables('LogicAppLogAnalyticsPolicyId')]",
-                "scope": "[resourceGroup().id]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "LogicAppPolicyAssignment",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+            ],
+            "properties":{
+                "mode":"Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "template":{
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "workspaceName": {
+                            "type": "string",
+                            "metadata": {
+                                "description": "Name of the Sentinel Workspace"
+                            }
+                        }
+                    },
+                    "variables": {
+                        "LogicAppLogAnalyticsPolicyId": "/providers/Microsoft.Authorization/policyDefinitions/b889a06c-ec72-4b03-910a-cb169ee18721"
+                    },
+                    "resources": [
+                    {
+                        "name":"LogicAppEnforceDiagnosticSettings",
+                        "type":"Microsoft.Authorization/policyAssignments",
+                        "apiVersion":"2020-09-01",
+                        "location": "[resourceGroup().location]",
+                        "properties": {
+                            "displayName": "LogicAppEnforceDiagnosticSettings",
+                            "policyDefinitionId":"[variables('LogicAppLogAnalyticsPolicyId')]",
+                            "scope": "[resourceGroup().id]",
+                            "parameters": {
+                                "effect":{
+                                    "value":"DeployIfNotExists"
+                                },
+                                "profileName":{
+                                    "value":"LogAnalyticsMonitoring"
+                                },
+                                "logAnalytics": {
+                                    "value":"[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspaceName'))]"
+                                },
+                                "metricsEnabled":{
+                                    "value":"False"
+                                },
+                                "logsEnabled":{
+                                    "value":"True"
+                                }
+                            }
+                        },
+                        "identity": {
+                            "type":"SystemAssigned"
+                        }
+                    }
+                ]
+                },
                 "parameters": {
-                    "effect":{
-                        "value":"DeployIfNotExists"
-                    },
-                    "profileName":{
-                        "value":"LogAnalyticsMonitoring"
-                    },
-                    "logAnalytics": {
-                        "value":"[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspaceName'))]"
-                    },
-                    "metricsEnabled":{
-                        "value":"False"
-                    },
-                    "logsEnabled":{
-                        "value":"True"
+                    "workspaceName": {
+                        "value": "[parameters('workspaceName')]"
                     }
                 }
-            },
-            "identity": {
-                "type":"SystemAssigned"
             }
         }
     ],

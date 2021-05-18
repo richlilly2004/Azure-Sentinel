@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group to deploy into"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "monitoringContributorRoleGuid": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "monitoringContributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('monitoringContributorRoleGuid'))]",
+        "logAnalyticsContributorRoleGuid": "92aaf0da-9dab-42b6-94a3-d43ce8d16293",
+        "logAnalyticsContributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('logAnalyticsContributorRoleGuid'))]"
+
+    },
+    "resources": [
+        {
+            "name": "[guid(parameters('rgName'), variables('monitoringContributorRoleId'))]",
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2021-04-01-preview",
+            "properties": {
+                "roleDefinitionId": "[variables('monitoringContributorRoleId')]",
+                "principalId": "[reference(resourceId('Microsoft.Authorization/policyAssignments', 'LogicAppEnforceDiagnosticSettings'), '2020-09-01', 'Full').identity.principalId]"
+            }
+        },
+        {
+            "name": "[guid(parameters('rgName'), variables('logAnalyticsContributorRoleId'))]",
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2021-04-01-preview",
+            "properties": {
+                "roleDefinitionId": "[variables('logAnalyticsContributorRoleId')]",
+                "principalId": "[reference(resourceId('Microsoft.Authorization/policyAssignments', 'LogicAppEnforceDiagnosticSettings'), '2020-09-01', 'Full').identity.principalId]"
+            }
+        }
+    ],
+    "outputs": {}
+}
