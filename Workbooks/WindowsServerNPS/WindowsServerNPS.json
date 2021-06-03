@@ -230,7 +230,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by Activity",
+        "query": "NPSLogs\r\n| summarize count() by Description",
         "size": 0,
         "title": "Count by Status",
         "timeContext": {
