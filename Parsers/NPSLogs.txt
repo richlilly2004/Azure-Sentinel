@@ -19,7 +19,12 @@
 // REFERENCES: 
 // Using functions in Azure monitor log queries: https://docs.microsoft.com/azure/azure-monitor/log-query/functions
 // 
-SecurityEvent
+let NPSAuthLogs = SecurityEvent
 | where EventID in ("6272","6273")
-| project TimeGenerated, Account, Computer, EventID, Activity, AuthenticationType, ClientIPAddress, ClientName
-| sort by TimeGenerated desc
+| project TimeGenerated, Account, Computer, EventID, Description=Activity, AuthenticationType, ClientIPAddress, ClientName;
+let NPSSystemLogs = Event
+| where Computer == "NTXNPS01.netrixllc.com"
+| where Source == "NPS"
+| project TimeGenerated, Computer, EventID, Description=RenderedDescription;
+union isfuzzy=true NPSAuthLogs,NPSSystemLogs
+| sort by TimeGenerated
