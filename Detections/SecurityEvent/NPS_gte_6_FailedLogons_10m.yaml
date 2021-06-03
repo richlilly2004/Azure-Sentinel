@@ -16,17 +16,21 @@ tactics:
 relevantTechniques:
   - T1110
 query: |
- NPSLogs
- | where TimeGenerated > ago(2*timeframe) 
- | where EventID == "6273"
- | summarize min(TimeGenerated), max(TimeGenerated), FailedLogonCount = count() by EventID, Activity, Account, Computer, AuthenticationType, ClientIPAddress, ClientName
- | where FailedLogonCount >= 6
- | project StartTimeUtc = min_TimeGenerated, EndTimeUtc = max_TimeGenerated, FailedLogonCount, EventID, Activity, Account, Computer, AuthenticationType, ClientIPAddress, ClientName
-entityMappings:
+let timeframe = 10m;
+NPSLogs
+| where TimeGenerated > ago(2*timeframe) 
+| where EventID == "6273"
+| summarize min(TimeGenerated), max(TimeGenerated), FailedLogonCount = count() by EventID, Account, FullyQualifiedSubjectUserName, Computer, Activity, AuthenticationType, EAPType, ClientIPAddress, ClientName, NASPortType, NetworkPolicyName, SubjectDomainName, SubjectUserName, SubjectUserSid
+| where FailedLogonCount >= 6
+| project StartTimeUtc = min_TimeGenerated, EndTimeUtc = max_TimeGenerated, FailedLogonCount, Account, FullyQualifiedSubjectUserName, Computer, Activity, AuthenticationType, EAPType, ClientIPAddress, ClientName, NASPortType, NetworkPolicyName, SubjectDomainName, SubjectUserName, SubjectUserSid
   - entityType: Account
     fieldMappings:
       - identifier: Name
         columnName: Account
+      - identifier: NTDomain
+        columnName: SubjectDomainName
+      - identifier: Sid
+        columnName: SubjectUserSid
   - entityType: Host
     fieldMappings:
       - identifier: Hostname
@@ -35,4 +39,4 @@ entityMappings:
     fieldMappings:
       - identifier: Address
         columnName: ClientIPAddress
-version: 1.0.0
+version: 1.0.1
