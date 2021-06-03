@@ -21,7 +21,7 @@
 // 
 let NPSAuthLogs = SecurityEvent
 | where EventID in ("6272","6273")
-| project TimeGenerated, Account, Computer, EventID, Description=Activity, AuthenticationType, ClientIPAddress, ClientName;
+| project TimeGenerated, Account, Computer, EventID, Activity, AuthenticationType, ClientIPAddress, ClientName;
 let NPSSystemLogs = Event
 | where Computer == "NTXNPS01.netrixllc.com"
 | where Source == "NPS"
