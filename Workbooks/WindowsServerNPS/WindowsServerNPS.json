@@ -49,7 +49,9 @@
               "durationMs": 86400000
             },
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+            ]
           },
           {
             "id": "2292f556-1b50-4003-b421-e3b6c130cdfd",
@@ -157,7 +159,7 @@
         "size": 0,
         "title": "Requests Trend",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
@@ -182,8 +184,9 @@
         "query": "NPSLogs",
         "size": 0,
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 0
         },
+        "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
         "crossComponentResources": [
@@ -230,7 +233,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by Activity",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by Activity",
         "size": 0,
         "title": "Count by Status",
         "timeContext": {
@@ -268,7 +271,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by Account",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by Account",
         "size": 0,
         "title": "Count by User",
         "timeContext": {
@@ -308,12 +311,13 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by AuthenticationType",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by AuthenticationType",
         "size": 0,
         "title": "Count by AuthenticationType",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
+        "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
         "crossComponentResources": [
@@ -333,12 +337,13 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by ClientIPAddress",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by ClientIPAddress",
         "size": 0,
         "title": "Count by ClientIP",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
+        "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
         "crossComponentResources": [
@@ -372,12 +377,13 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "NPSLogs\r\n| summarize count() by ClientName",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by ClientName",
         "size": 0,
         "title": "Count by ClientName",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
+        "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
         "crossComponentResources": [
@@ -407,6 +413,8 @@
       "customWidth": "33",
       "name": "query - 0 - Copy - Copy - Copy - Copy"
     }
+  ],
+  "fallbackResourceIds": [
   ],
   "fromTemplateId": "sentinel-WindowsServerNPS",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
