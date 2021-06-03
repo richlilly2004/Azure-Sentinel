@@ -1,0 +1,25 @@
+// Title:           Windows Server NPS
+// Author:          Netrix LLC
+// Version:         1.0
+// Last Updated:    6/03/2021
+// Comment:         Initial Release
+//  
+// DESCRIPTION:
+// This parser takes SecurityEvent log EventIDs 6272, 6273 (once enabled in GPO Auditing)
+//
+// USAGE:
+// 1. Make sure the SecurityEvents Data Connector is enabled and set to at least "Common"
+// 2. Setup a Group Policy (or local policy) scoped to your NPS servers to enable NPS authentication logging. You can set the following to Enabled for Success, Failure in GPO: 
+// Computer Configuration > Policies > Windows Settings > Advanced Audit Configuration > Logoon/Logoff > Audit Network Policy Server 
+// 3. Open Log Analytics/Azure Sentinel Logs blade. Copy the query below and paste into the Logs query window. 
+// 4. Click the Save button above the query. A pane will appear on the right, select "as Function" from the drop down. Enter a Function Name.
+//    It is recommended to name the Function Alias, as NPSLogs
+// 5. Kusto Functions can typically take up to 15 minutes to activate. You can then use Function Alias for other queries.
+//
+// REFERENCES: 
+// Using functions in Azure monitor log queries: https://docs.microsoft.com/azure/azure-monitor/log-query/functions
+// 
+SecurityEvent
+| where EventID in ("6272","6273")
+| project TimeGenerated, Account, Computer, EventID, Activity, AuthenticationType, ClientIPAddress, ClientName
+| sort by TimeGenerated desc

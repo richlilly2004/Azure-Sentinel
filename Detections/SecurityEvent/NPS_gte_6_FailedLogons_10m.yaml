@@ -1,0 +1,38 @@
+id: 29be0cd6-8f71-4c35-b775-1454b4794153
+name: Failed NPS/RADIUS logon attempts within 10 mins
+description: |
+  'Identifies when failed NPS/RADIUS logon attempts are 6 or higher during a 10 minute period.'
+severity: Medium
+requiredDataConnectors:
+  - connectorId: SecurityEvents
+    dataTypes:
+      - SecurityEvent
+queryFrequency: 1h
+queryPeriod: 1h
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - CredentialAccess
+relevantTechniques:
+  - T1110
+query: |
+ NPSLogs
+ | where TimeGenerated > ago(2*timeframe) 
+ | where EventID == "6273"
+ | summarize min(TimeGenerated), max(TimeGenerated), FailedLogonCount = count() by EventID, Activity, Account, Computer, AuthenticationType, ClientIPAddress, ClientName
+ | where FailedLogonCount >= 6
+ | project StartTimeUtc = min_TimeGenerated, EndTimeUtc = max_TimeGenerated, FailedLogonCount, EventID, Activity, Account, Computer, AuthenticationType, ClientIPAddress, ClientName
+entityMappings:
+  - entityType: Account
+    fieldMappings:
+      - identifier: Name
+        columnName: Account
+  - entityType: Host
+    fieldMappings:
+      - identifier: Hostname
+        columnName: Computer
+  - entityType: IP
+    fieldMappings:
+      - identifier: Address
+        columnName: ClientIPAddress
+version: 1.0.0
