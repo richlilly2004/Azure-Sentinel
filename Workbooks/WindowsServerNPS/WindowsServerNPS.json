@@ -50,8 +50,7 @@
             },
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-            ]
+            "value": []
           },
           {
             "id": "2292f556-1b50-4003-b421-e3b6c130cdfd",
@@ -330,8 +329,34 @@
         "comparison": "isEqualTo",
         "value": "ClientAuth"
       },
-      "customWidth": "33",
+      "customWidth": "50",
       "name": "query - 0 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "NPSLogs\r\n| where EventID in (\"6272\",\"6273\")\r\n| summarize count() by EAPType",
+        "size": 0,
+        "title": "Count by EAPType",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{Workspace}"
+        ],
+        "visualization": "piechart"
+      },
+      "conditionalVisibility": {
+        "parameterName": "Tab",
+        "comparison": "isEqualTo",
+        "value": "ClientAuth"
+      },
+      "customWidth": "50",
+      "name": "query - 0 - Copy - Copy - Copy"
     },
     {
       "type": 3,
@@ -370,7 +395,7 @@
         "comparison": "isEqualTo",
         "value": "ClientAuth"
       },
-      "customWidth": "33",
+      "customWidth": "50",
       "name": "query - 0 - Copy - Copy - Copy"
     },
     {
@@ -410,11 +435,9 @@
         "comparison": "isEqualTo",
         "value": "ClientAuth"
       },
-      "customWidth": "33",
+      "customWidth": "50",
       "name": "query - 0 - Copy - Copy - Copy - Copy"
     }
-  ],
-  "fallbackResourceIds": [
   ],
   "fromTemplateId": "sentinel-WindowsServerNPS",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
