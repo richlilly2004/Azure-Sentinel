@@ -21,7 +21,33 @@
 // 
 let NPSAuthLogs = SecurityEvent
 | where EventID in ("6272","6273")
-| project TimeGenerated, Account, Computer, EventID, Activity, AuthenticationType, ClientIPAddress, ClientName;
+| where EventData <> "<EventData xmlns=\"http://schemas.microsoft.com/win/2004/08/events/event\">
+  <Data Name=\"SubjectUserSid\">*</Data>
+  <Data Name=\"SubjectUserName\">*</Data>
+  <Data Name=\"SubjectDomainName\">*</Data>
+  <Data Name=\"FullyQualifiedSubjectUserName\"*</Data>
+  <Data Name=\"SubjectMachineSID\">*</Data>
+  <Data Name=\"SubjectMachineName\">*</Data>
+  <Data Name=\"FullyQualifiedSubjectMachineName\">*</Data>
+  <Data Name=\"CalledStationID\">*</Data>
+  <Data Name=\"CallingStationID\">*</Data>
+  <Data Name=\"NASIPv4Address\">*</Data>
+  <Data Name=\"NASIPv6Address\">*</Data>
+  <Data Name=\"NASIdentifier\">*</Data>
+  <Data Name=\"NASPortType\">*</Data>
+  <Data Name=\"NASPort\">*</Data>
+  <Data Name=\"ClientName\">*</Data>
+  <Data Name=\"ClientIPAddress\">*</Data>
+  <Data Name=\"ProxyPolicyName\">*</Data>
+  <Data Name=\"NetworkPolicyName\">*</Data>
+  <Data Name=\"AuthenticationProvider\">*</Data>
+  <Data Name=\"AuthenticationServer\">*</Data>
+  <Data Name=\"AuthenticationType\">*</Data>
+  <Data Name=\"EAPType\">*)</Data>
+  <Data Name=\"AccountSessionIdentifier\">*</Data>
+  <Data Name=\"LoggingResult\">*</Data>
+</EventData>"
+| project TimeGenerated, Account, FullyQualifiedSubjectUserName, Computer, EventID, Activity, AuthenticationType, EAPType, ClientIPAddress, ClientName, NASPortType, NetworkPolicyName, SubjectDomainName, SubjectUserName, SubjectUserSid;
 let NPSSystemLogs = Event
 | where Computer == "NTXNPS01.netrixllc.com"
 | where Source == "NPS"
