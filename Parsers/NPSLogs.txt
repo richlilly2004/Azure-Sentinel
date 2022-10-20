@@ -21,7 +21,7 @@
 // 
 let NPSAuthLogs = SecurityEvent
 | where EventID in ("6272","6273")
-| where EventData <> "<EventData xmlns=\"http://schemas.microsoft.com/win/2004/08/events/event\">
+| where EventData <> ```<EventData xmlns=\"http://schemas.microsoft.com/win/2004/08/events/event\">
   <Data Name=\"SubjectUserSid\">*</Data>
   <Data Name=\"SubjectUserName\">*</Data>
   <Data Name=\"SubjectDomainName\">*</Data>
@@ -46,11 +46,12 @@ let NPSAuthLogs = SecurityEvent
   <Data Name=\"EAPType\">*)</Data>
   <Data Name=\"AccountSessionIdentifier\">*</Data>
   <Data Name=\"LoggingResult\">*</Data>
-</EventData>"
+</EventData>```
 | project TimeGenerated, Account, FullyQualifiedSubjectUserName, Computer, EventID, Activity, AuthenticationType, EAPType, ClientIPAddress, ClientName, NASPortType, NetworkPolicyName, SubjectDomainName, SubjectUserName, SubjectUserSid;
 let NPSSystemLogs = Event
 | where Computer == "NTXNPS01.netrixllc.com"
 | where Source == "NPS"
 | project TimeGenerated, Computer, EventID, Description=RenderedDescription;
-union isfuzzy=true NPSAuthLogs,NPSSystemLogs
+union isfuzzy=true withsource=_table NPSAuthLogs,NPSSystemLogs
+| extend NPS_Source = iff(_table == "NPSAuthLogs", "NPSAuthLogs", "NPSSystemLogs")
 | sort by TimeGenerated
